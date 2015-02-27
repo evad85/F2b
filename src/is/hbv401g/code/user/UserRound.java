@@ -1,4 +1,5 @@
-package is.hbv401g.code;
+package is.hbv401g.code.user;
+
 
 public class UserRound {
 	

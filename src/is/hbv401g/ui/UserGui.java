@@ -1,12 +1,13 @@
 package is.hbv401g.ui;
 
-import is.hbv401g.code.Game;
-import is.hbv401g.code.User;
+import is.hbv401g.code.fantasy.Game;
+import is.hbv401g.code.user.User;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -32,7 +33,7 @@ public class UserGui extends JPanel {
 	}
 	
 	public static void updateTextArea() {
-		ArrayList <User> users = game.getUsers();
+		List <User> users = game.getUsers();
 		int i = users.size();
 		String text = " ";
 		for(int j = 0; j<i; j++) {

@@ -1,6 +1,6 @@
 package is.hbv401g.ui;
 
-import is.hbv401g.code.Game;
+import is.hbv401g.code.fantasy.Game;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -74,7 +74,7 @@ public class MainGui extends JFrame {
 		JButton btnNewUser = new JButton("Staðfesta");
 		btnNewUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.addNewUser(textFieldUserName.getText());
+				game.addNewUser(textFieldUserName.getText(), "");
 				textFieldUserName.setText("");
 			}
 		});
