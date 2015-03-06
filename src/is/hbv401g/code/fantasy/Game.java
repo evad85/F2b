@@ -12,16 +12,18 @@ import java.util.List;
 public class Game {
 	private final List <User> users = new ArrayList<>();
 	private HashMap<String, Player> tmpTeam = new HashMap<String, Player>();
+	private int roundNumber = 0;
 	private String teamName;
+	private int maxRounds = 18;
 	private int userTurn = 0;
-	private Round round = new Round();
-	private Core core = new Core();
-	private Market market = new Market(core);
+	private Core base = new Core();
+	private Market market = new Market(base);
 	
 	
 	/**
 	 * 
 	 * @param name
+	 * 
 	 */
 	public void addNewUser(String userName, String teamName ) {
 		User newUser = new User(userName);
@@ -34,8 +36,8 @@ public class Game {
 	 */
 	private void updateUserTeam() {
 		Player[] players = (Player[])tmpTeam.values().toArray();
-		UserTeam team = new UserTeam(teamName, players);
-		users.get(userTurn).setUserTeam(team);
+		//UserTeam team = new UserTeam(teamName, players);
+		//users.get(userTurn).setUserTeam(team);
 	}
 	
 	/**
@@ -45,13 +47,13 @@ public class Game {
 	 */
 	public int addPlayer(String name) {
 		User user = users.get(userTurn);
-		Player player = market.findPlayer(name);
+		Player player = market.findPlayer(name, "");
 		double marketValue = player.getMarketValue();
-		boolean validBudget = user.buyPlayer(marketValue);
-		if(validBudget && tmpTeam.size()<12) {
-			tmpTeam.put(name, player);
-			return 0;
-		}
+		//boolean validBudget = user.buyPlayer(marketValue);
+		//if(validBudget && tmpTeam.size()<12) {
+			//tmpTeam.put(name, player);
+			//return 0;
+		//}
 		return -1;
 	}
 	
@@ -71,6 +73,10 @@ public class Game {
 		return users;
 	}
 	
+	public User getCurrentUser() {
+		return users.get(userTurn);
+	}
+	
 	/**
 	 * 
 	 */
@@ -83,6 +89,11 @@ public class Game {
 	 * @return
 	 */
 	public boolean endRound() {
+		// updateTeam
+		// athuga hvort að allir séu búnir að gera
+		// updateMarket
+		// uppfæra stig
+		// breyta userTurn í 0
 		return false;
 	}
 	
@@ -91,11 +102,19 @@ public class Game {
 	 * @return
 	 */
 	public Core getCore() {
-		return core;
+		return base;
 	}
 	
 	public int getUserTurn() {
 		return userTurn;
+	}
+	
+	private void calculatePoints() {
+		
+	}
+	
+	public int getCurrentRound() {
+		return roundNumber;
 	}
 
 }

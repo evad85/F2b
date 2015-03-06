@@ -4,19 +4,19 @@ package is.hbv401g.code.user;
 public class UserRound {
 	
 	private final UserTeam userTeam;
-	private final int score;
+	private final int points;
 	
-	public UserRound(UserTeam team, int score) {
+	public UserRound(UserTeam team, int points) {
 		userTeam = team;
-		this.score = score;
+		this.points = points;
 	}
 
 	public UserTeam getUserTeam() {
 		return userTeam;
 	}
 
-	public int getScore() {
-		return score;
+	public int getPoints() {
+		return points;
 	}
 
 }

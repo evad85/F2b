@@ -67,8 +67,8 @@ public class User {
 	 * Updates the users points
 	 * @param points
 	 */
-	public void setPoints(int points) {
-		this.points = points;
+	public void updatePoints(int points) {
+		this.points += points;
 	}
 	
 	/**

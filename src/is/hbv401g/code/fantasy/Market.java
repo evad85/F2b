@@ -19,7 +19,7 @@ public class Market {
 		allTeams = new FootballTeam("Öll lið", core.getAllPlayers());
 	}
 	
-	public Player findPlayer(String name) {
+	public Player findPlayer(String name, String teamName) {
 		Player[] allPlayers = allTeams.getAllPlayers();
 		Player player = null;
 		for(int i = 0; i<allPlayers.length; i++) {
