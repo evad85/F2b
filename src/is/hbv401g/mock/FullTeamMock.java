@@ -5,8 +5,7 @@ import is.hbv401g.code.user.UserTeam;
 public class FullTeamMock implements UserTeam {
 
 	@Override
-	public int numberOfPlayers() {
+	public int getNumberOfPlayers() {
 		return 15;
 	}
-
 }

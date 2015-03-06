@@ -79,15 +79,6 @@ public class User {
 		return budget;
 	}
 	
-	/**
-	 * Returns true if the users budget is enough
-	 * to buy a user selected player, returns false
-	 * otherwise
-	 * @return
-	 */
-	private boolean checkBudget() {
-		return false;
-	}
 	
 	/**
 	 * Returns true if the users budget is enough to buy
@@ -96,7 +87,10 @@ public class User {
 	 * @param marketValue
 	 * @return
 	 */
-	public boolean buyPlayer(double marketValue) {
+	public boolean buyPlayer(double marketValue, double budget) {
+		boolean enoughBudget = marketValue <= budget;
+		int playerCount = userTeam.getNumberOfPlayers();
+		
 		return true;
 	}
 	
