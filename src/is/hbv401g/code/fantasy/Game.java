@@ -4,6 +4,7 @@ import is.hbv401g.code.user.User;
 import is.hbv401g.code.user.UserTeam;
 import is.hbv401g.dummy.Core;
 import is.hbv401g.dummy.Player;
+import is.hbv401g.mock.RandomNumberOfPlayersMock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class Game {
 	 * 
 	 */
 	public void addNewUser(String userName, String teamName ) {
-		User newUser = new User(userName);
+		User newUser = new User(userName, new RandomNumberOfPlayersMock());
 		users.add(newUser);
 		this.teamName = teamName;
 	}

@@ -25,8 +25,9 @@ public class User {
 	 * Creates new user with name as user name
 	 * @param name
 	 */
-	public User(String name) {
+	public User(String name, UserTeam userTeam) {
 		this.name = name;
+		this.userTeam = userTeam;
 	}
 	
 	/**
@@ -87,11 +88,11 @@ public class User {
 	 * @param marketValue
 	 * @return
 	 */
-	public boolean buyPlayer(double marketValue, double budget) {
+	public boolean buyPlayer(double budget, double marketValue) {
 		boolean enoughBudget = marketValue <= budget;
-		int playerCount = userTeam.getNumberOfPlayers();
+	    //int playerCount = userTeam.getNumberOfPlayers();
 		
-		return true;
+		return enoughBudget;
 	}
 	
 	/**
