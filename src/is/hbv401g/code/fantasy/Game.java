@@ -56,6 +56,8 @@ public class Game {
 		if(user.hasEnoughBudget(marketValue) && tmpTeam.size()<12) {
 			tmpTeam.put(name, player);
 			user.updateBudget(marketValue, true);
+			System.out.println("budget " + user.getBudget());
+			System.out.println("marketvalue " +marketValue);
 			System.out.println("budget after buy" + user.getBudget());
 			return 0;
 		}

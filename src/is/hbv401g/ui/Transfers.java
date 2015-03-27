@@ -116,11 +116,7 @@ public class Transfers extends JPanel {
 		shirts = new HashMap<String, ImageIcon>();
 		initShirts();
 		initView();
-		
-
-		
-
-		
+				
 		listMarket = new JList();
 		listMarket.setBounds(583, 37, 197, 304);
 		add(listMarket);
@@ -140,7 +136,7 @@ public class Transfers extends JPanel {
 		lblBudget_1.setBounds(332, 521, 61, 40);
 		add(lblBudget_1);
 		
-		budgetLabel = new JLabel("200 kr");
+		budgetLabel = new JLabel("");
 		budgetLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		budgetLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		budgetLabel.setBounds(414, 521, 61, 40);
