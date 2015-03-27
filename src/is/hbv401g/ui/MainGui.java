@@ -17,12 +17,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
 import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class MainGui extends JFrame {
 
 	JPanel contentPane;
 	private final Game game = new Game();
-	private final JTextField textFieldUserName;
+	private final JTextField textFieldUserName1;
+	private JTextField textFieldUserName2;
 
 	/**
 	 * Launch the application.
@@ -58,28 +60,45 @@ public class MainGui extends JFrame {
 		JButton btnNewGame = new JButton("Hefja leik");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-				cardLayout.show(contentPane, "game");
-				UserGui.updateTextArea();
+				String user1=textFieldUserName1.getText();
+				String user2=textFieldUserName2.getText();
+				if(user1.equals("") && user2.equals("")){
+					labelErrorMessage..setText("Vinsamlegast fylla út leikmannanöfn");
+				}
+				else{
+					game.addNewUser(user1,"");
+					game.addNewUser(user2,"");
+					System.out.println("leikmaður 1: " + textFieldUserName1.getText());
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "game");
+					UserGui.updateTextArea();
+				}
 			}
 		});
-		btnNewGame.setBounds(317, 233, 117, 29);
+		btnNewGame.setBounds(132, 190, 164, 39);
 		panelUsers.add(btnNewGame);
 		
-		textFieldUserName = new JTextField();
-		textFieldUserName.setBounds(6, 110, 217, 28);
-		panelUsers.add(textFieldUserName);
-		textFieldUserName.setColumns(10);
+		textFieldUserName1 = new JTextField();
+		textFieldUserName1.setBounds(132, 47, 164, 29);
+		panelUsers.add(textFieldUserName1);
+		textFieldUserName1.setColumns(10);
 		
-		JButton btnNewUser = new JButton("StaÃ°festa");
-		btnNewUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				game.addNewUser(textFieldUserName.getText(), "");
-				textFieldUserName.setText("");
-			}
-		});
-		btnNewUser.setBounds(317, 111, 117, 29);
-		panelUsers.add(btnNewUser);
+		textFieldUserName2 = new JTextField();
+		textFieldUserName2.setBounds(132, 98, 164, 29);
+		panelUsers.add(textFieldUserName2);
+		textFieldUserName2.setColumns(10);
+		
+		JLabel labelUsernName1 = new JLabel("Leikma\u00F0ur 1");
+		labelUsernName1.setBounds(132, 23, 164, 23);
+		panelUsers.add(labelUsernName1);
+		
+		JLabel labelUserName2 = new JLabel("Leikma\u00F0ur 2");
+		labelUserName2.setBounds(132, 75, 164, 23);
+		panelUsers.add(labelUserName2);
+		
+		JLabel labelErrorMessage = new JLabel("");
+		labelErrorMessage.setBounds(132, 150, 164, 29);
+		panelUsers.add(labelErrorMessage);
 		
 		JTabbedPane tabbedPaneGame = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPaneGame, "game");
@@ -95,5 +114,4 @@ public class MainGui extends JFrame {
 		
 		
 	}
-	
 }
