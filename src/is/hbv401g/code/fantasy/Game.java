@@ -27,7 +27,7 @@ public class Game {
 	 * 
 	 */
 	public void addNewUser(String userName, String teamName ) {
-		User newUser = new User(userName, new RandomNumberOfPlayersMock());
+		User newUser = new User(userName, new UserTeam(null));
 		users.add(newUser);
 		this.teamName = teamName;
 	}
@@ -35,10 +35,11 @@ public class Game {
 	/**
 	 * 
 	 */
-	private void updateUserTeam() {
+	public void updateUserTeam() {
+		
 		FootballPlayer[] players = (FootballPlayer[])tmpTeam.values().toArray();
-		//UserTeam team = new UserTeam(teamName, players);
-		//users.get(userTurn).setUserTeam(team);
+		UserTeam team = new UserTeam(tmpTeam);
+		users.get(userTurn).setUserTeam(team);
 	}
 	
 	/**

@@ -2,8 +2,10 @@ package is.hbv401g.ui;
 
 import is.hbv401g.code.fantasy.Game;
 import is.hbv401g.code.user.User;
+import is.hbv401g.code.user.UserTeam;
 import is.hbv401g.dummy.Core;
 import is.hbv401g.dummy.FootballPlayer;
+import is.hbv401g.mock.RandomNumberOfPlayersMock;
 
 import javax.swing.JPanel;
 
@@ -33,8 +35,11 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.ListSelectionModel;
+
 import java.awt.Font;
 
 public class Transfers extends JPanel {
@@ -91,6 +96,9 @@ public class Transfers extends JPanel {
 	
 	private HashMap<String, ImageIcon> shirts;
 	private ArrayList<JButton> addButtons;
+	
+	private ArrayList<JLabel> namesLabels;
+	private ArrayList<JLabel> shirtLabels;
 	JFrame frame = new JFrame();
 	/**
 	 * Create the panel.
@@ -107,9 +115,9 @@ public class Transfers extends JPanel {
 		
 		shirts = new HashMap<String, ImageIcon>();
 		initShirts();
-		
-		
 		initView();
+		
+
 		
 
 		
@@ -141,6 +149,15 @@ public class Transfers extends JPanel {
 		
 	}
 	
+	private void displayUserTeam() {
+		User user = game.getCurrentUser();
+		UserTeam userTeam = user.getUserTeam();
+		Map<String, FootballPlayer> players = userTeam.getPlayers();
+		for(Entry<String, FootballPlayer> playersEntry : players.entrySet()){
+            System.out.println(playersEntry.getKey() +" :: "+ playersEntry.getValue());
+        }
+	}
+	
 	/**
 	 * 
 	 */
@@ -154,7 +171,7 @@ public class Transfers extends JPanel {
 			
 		}else {
 			JOptionPane.showMessageDialog(frame,
-				    "You don´t have enough budget too buy" + playerName);
+				    "You don´t have enough budget too buy " + playerName);
 		}
 	}
 	
@@ -439,9 +456,14 @@ public class Transfers extends JPanel {
 		add(pitch);
 		
 		JButton btnConf = new JButton("Confirm transfare");
+		btnConf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.updateUserTeam();
+			}
+		});
 		btnConf.setBounds(22, 521, 128, 40);
 		add(btnConf);
-	
+		
 	}
 	
 	private void initShirts(){

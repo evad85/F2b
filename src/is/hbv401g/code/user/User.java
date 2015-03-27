@@ -88,7 +88,7 @@ public class User {
 		if (buy) {
 			this.budget -= marketValue;
 		}else{
-			this.budget += marketValue;
+			this.budget -= marketValue;
 		}
 
 	}
