@@ -35,6 +35,8 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.ListSelectionModel;
 
@@ -115,7 +117,7 @@ public class Transfers extends JPanel {
 		initShirts();
 		initView();
 		
-		displayUserTeam();
+
 		
 
 		
@@ -148,8 +150,12 @@ public class Transfers extends JPanel {
 	}
 	
 	private void displayUserTeam() {
-		//UserTeam userTeam = game.getCurrentUser().getUserTeam();
-		//HashMap<String, FootballPlayer> players = userTeam.getPlayers();
+		User user = game.getCurrentUser();
+		UserTeam userTeam = user.getUserTeam();
+		Map<String, FootballPlayer> players = userTeam.getPlayers();
+		for(Entry<String, FootballPlayer> playersEntry : players.entrySet()){
+            System.out.println(playersEntry.getKey() +" :: "+ playersEntry.getValue());
+        }
 	}
 	
 	/**
@@ -165,7 +171,7 @@ public class Transfers extends JPanel {
 			
 		}else {
 			JOptionPane.showMessageDialog(frame,
-				    "You don´t have enough budget too buy" + playerName);
+				    "You don´t have enough budget too buy " + playerName);
 		}
 	}
 	
@@ -450,9 +456,14 @@ public class Transfers extends JPanel {
 		add(pitch);
 		
 		JButton btnConf = new JButton("Confirm transfare");
+		btnConf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.updateUserTeam();
+			}
+		});
 		btnConf.setBounds(22, 521, 128, 40);
 		add(btnConf);
-	
+		
 	}
 	
 	private void initShirts(){

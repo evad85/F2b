@@ -11,7 +11,7 @@ public class UserTeam {
 HashMap<String, FootballPlayer> players;
 	
 	
-	public UserTeam() {
+	public UserTeam(HashMap<String, FootballPlayer> players) {
 		// TODO Auto-generated constructor stub
 		players = new HashMap<String, FootballPlayer>();
 		players.put("Sterling", new FootballPlayer("Sterling", 20, "Liverpool", 10, 34.5));
