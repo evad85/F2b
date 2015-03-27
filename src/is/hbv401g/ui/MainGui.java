@@ -17,12 +17,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
 import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class MainGui extends JFrame {
 
 	JPanel contentPane;
 	private final Game game = new Game();
-	private final JTextField textFieldUserName;
+	private final JTextField textFieldUserName1;
+	private JTextField textFieldUserName2;
 
 	/**
 	 * Launch the application.
@@ -49,40 +51,75 @@ public class MainGui extends JFrame {
 		final JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new CardLayout(0, 0));
-		
+		final CardLayout cardLayout = new CardLayout();
+		contentPane.setLayout(cardLayout);
+		System.out.println("hahe");
+		PlayRound panelPlayRound = new PlayRound(game);		
 		JPanel panelUsers = new JPanel();
-		contentPane.add(panelUsers, "users");
-		panelUsers.setLayout(null);
+		JTabbedPane tabbedPaneGame = new JTabbedPane(JTabbedPane.TOP);		
+		
+		contentPane.add(panelPlayRound, "panelPlayRound");
+		contentPane.add(tabbedPaneGame, "tabbedPaneGame");
+		contentPane.add(panelUsers, "panelUsers");
+		cardLayout.show(contentPane, "panelUsers");
 		
 		JButton btnNewGame = new JButton("Hefja leik");
+		panelUsers.setLayout(null);
+		
+		final JLabel labelErrorMessage = new JLabel("");
+		labelErrorMessage.setBounds(20, 16, 0, 0);
+		panelUsers.add(labelErrorMessage);
+		
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-				cardLayout.show(contentPane, "game");
-				UserGui.updateTextArea();
+				String user1=textFieldUserName1.getText();
+				String user2=textFieldUserName2.getText();
+				if(user1.equals("") && user2.equals("")){
+					labelErrorMessage.setText("Vinsamlegast fylla út leikmannanöfn");
+				}
+				else{
+					game.addNewUser(user1,"");
+					game.addNewUser(user2,"");
+					
+					cardLayout.show(contentPane, "panelPlayRound");
+					UserGui.updateTextArea();
+				}
 			}
 		});
-		btnNewGame.setBounds(317, 233, 117, 29);
+		
+		panelPlayRound.btnPlayer1Ready.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(contentPane, "tabbedPaneGame");
+			}
+		});
+		
+		panelPlayRound.btnPlayer2Ready.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(contentPane, "tabbedPaneGame");
+			}
+		});
+		
+		btnNewGame.setBounds(164, 155, 86, 23);
 		panelUsers.add(btnNewGame);
 		
-		textFieldUserName = new JTextField();
-		textFieldUserName.setBounds(6, 110, 217, 28);
-		panelUsers.add(textFieldUserName);
-		textFieldUserName.setColumns(10);
+		textFieldUserName1 = new JTextField();
+		textFieldUserName1.setBounds(164, 55, 86, 20);
+		panelUsers.add(textFieldUserName1);
+		textFieldUserName1.setColumns(10);
 		
-		JButton btnNewUser = new JButton("StaÃ°festa");
-		btnNewUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				game.addNewUser(textFieldUserName.getText(), "");
-				textFieldUserName.setText("");
-			}
-		});
-		btnNewUser.setBounds(317, 111, 117, 29);
-		panelUsers.add(btnNewUser);
+		textFieldUserName2 = new JTextField();
+		textFieldUserName2.setBounds(164, 111, 86, 20);
+		panelUsers.add(textFieldUserName2);
+		textFieldUserName2.setColumns(10);
 		
-		JTabbedPane tabbedPaneGame = new JTabbedPane(JTabbedPane.TOP);
-		contentPane.add(tabbedPaneGame, "game");
+		JLabel labelUsernName1 = new JLabel("Leikma\u00F0ur 1");
+		labelUsernName1.setBounds(164, 42, 57, 14);
+		panelUsers.add(labelUsernName1);
+		
+		JLabel labelUserName2 = new JLabel("Leikma\u00F0ur 2");
+		labelUserName2.setBounds(164, 96, 57, 14);
+		panelUsers.add(labelUserName2);
+		
 		
 		UserGui panelUserGui = new UserGui(game);
 		tabbedPaneGame.addTab("User", null, panelUserGui, null);
@@ -95,5 +132,4 @@ public class MainGui extends JFrame {
 		
 		
 	}
-	
 }
