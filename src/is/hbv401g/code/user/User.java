@@ -14,7 +14,7 @@ public class User {
 	private UserTeam userTeam; 
 	private final String name; 
 	private int points = 0;
-	private double budget = 200.0;
+	private double budget = 10000.0;
 	// Each seat in the array holds information about the
 	// team the user selected for one round and the users score
 	// in that round. The first seat is empty so that seat number 1
@@ -88,7 +88,7 @@ public class User {
 		if (buy) {
 			this.budget -= marketValue;
 		}else{
-			this.budget -= marketValue;
+			this.budget += marketValue;
 		}
 
 	}
