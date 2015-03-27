@@ -88,7 +88,7 @@ public class Transfers extends JPanel {
 		});
 		this.game = game;
 		setLayout(null);
-		
+		initView();
 		JButton btnBuyPlayer = new JButton("Kaupa leikmann");
 		btnBuyPlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -120,6 +120,55 @@ public class Transfers extends JPanel {
 		add(lblNewLabel);
 		
 		
+
+		
+		
+
+		
+		
+		
+
+		
+
+		
+		
+
+		
+		
+	}
+	
+	/**
+	 * 
+	 */
+	private void buyPlayer() {
+		String playerName = listMarket.getSelectedValue().toString();
+		int valid = game.addPlayer(playerName);
+		if(valid==0) {
+			lblNewLabel.setText(playerName);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void sellPlayer() {
+		
+	}
+	
+	private void setMarket() {
+		
+		DefaultListModel listModel = new DefaultListModel();
+		Core core = game.getCore();
+		FootballPlayer[] players = core.getAllPlayers();
+		for(int i = 0; i<players.length; i++) {
+			listModel.addElement(players[i].getName());
+		}
+		listMarket.setModel(listModel);
+		User user = game.getUsers().get(game.getUserTurn());
+		lblBudget.setText(user.getBudget()+"");
+	}
+	
+	private void initView(){
 		// Shirt images
 		goalkeeperImg = new JLabel("");
 		goalkeeperImg.setIcon(new ImageIcon(Transfers.class.getResource("/resources/manutd_goalkeeper_shirt.png")));
@@ -334,50 +383,6 @@ public class Transfers extends JPanel {
 		JButton btnConf = new JButton("Confirm team");
 		btnConf.setBounds(22, 521, 128, 40);
 		add(btnConf);
-		
-		
-
-		
-		
-		
-
-		
-
-		
-		
-
-		
-		
-	}
 	
-	/**
-	 * 
-	 */
-	private void buyPlayer() {
-		String playerName = listMarket.getSelectedValue().toString();
-		int valid = game.addPlayer(playerName);
-		if(valid==0) {
-			lblNewLabel.setText(playerName);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private void sellPlayer() {
-		
-	}
-	
-	private void setMarket() {
-		
-		DefaultListModel listModel = new DefaultListModel();
-		Core core = game.getCore();
-		FootballPlayer[] players = core.getAllPlayers();
-		for(int i = 0; i<players.length; i++) {
-			listModel.addElement(players[i].getName());
-		}
-		listMarket.setModel(listModel);
-		User user = game.getUsers().get(game.getUserTurn());
-		lblBudget.setText(user.getBudget()+"");
 	}
 }
