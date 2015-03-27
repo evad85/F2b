@@ -27,7 +27,7 @@ public class Game {
 	 * 
 	 */
 	public void addNewUser(String userName, String teamName ) {
-		User newUser = new User(userName, new RandomNumberOfPlayersMock());
+		User newUser = new User(userName, new UserTeam());
 		users.add(newUser);
 		this.teamName = teamName;
 	}

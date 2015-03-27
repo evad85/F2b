@@ -14,12 +14,12 @@ public class UserTest {
 		
 		double marketValue = 1000;
 		
-		UserTeam randomPlayerMock = new RandomNumberOfPlayersMock();
+		/*UserTeam randomPlayerMock = new RandomNumberOfPlayersMock();
 		int numberOfPlayers = randomPlayerMock.getNumberOfPlayers();
 		assertTrue(numberOfPlayers < 16);
 		assertFalse(numberOfPlayers >= 16);
 		
-		User user = new User("Birkir", randomPlayerMock);
+		User user = new User("Birkir", randomPlayerMock);*/
 		
 		//valid equivalence classes for budget are x is int,  x >= 1000
 		/*assertTrue(user.buyPlayer(1200, marketValue));

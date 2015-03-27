@@ -2,8 +2,10 @@ package is.hbv401g.ui;
 
 import is.hbv401g.code.fantasy.Game;
 import is.hbv401g.code.user.User;
+import is.hbv401g.code.user.UserTeam;
 import is.hbv401g.dummy.Core;
 import is.hbv401g.dummy.FootballPlayer;
+import is.hbv401g.mock.RandomNumberOfPlayersMock;
 
 import javax.swing.JPanel;
 
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ListSelectionModel;
+
 import java.awt.Font;
 
 public class Transfers extends JPanel {
@@ -91,6 +94,9 @@ public class Transfers extends JPanel {
 	
 	private HashMap<String, ImageIcon> shirts;
 	private ArrayList<JButton> addButtons;
+	
+	private ArrayList<JLabel> namesLabels;
+	private ArrayList<JLabel> shirtLabels;
 	JFrame frame = new JFrame();
 	/**
 	 * Create the panel.
@@ -107,9 +113,9 @@ public class Transfers extends JPanel {
 		
 		shirts = new HashMap<String, ImageIcon>();
 		initShirts();
-		
-		
 		initView();
+		
+		displayUserTeam();
 		
 
 		
@@ -139,6 +145,11 @@ public class Transfers extends JPanel {
 		add(budgetLabel);
 		
 		
+	}
+	
+	private void displayUserTeam() {
+		//UserTeam userTeam = game.getCurrentUser().getUserTeam();
+		//HashMap<String, FootballPlayer> players = userTeam.getPlayers();
 	}
 	
 	/**
