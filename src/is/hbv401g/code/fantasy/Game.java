@@ -48,13 +48,15 @@ public class Game {
 	 */
 	public int addPlayer(String name) {
 		User user = users.get(userTurn);
-		FootballPlayer player = market.findPlayer(name, "");
+		FootballPlayer player = market.findPlayer(name);
 		double marketValue = player.getMarketValue();
-		//boolean validBudget = user.buyPlayer(marketValue);
-		//if(validBudget && tmpTeam.size()<12) {
-			//tmpTeam.put(name, player);
-			//return 0;
-		//}
+		System.out.println("budget before buy" + user.getBudget());
+		if(user.hasEnoughBudget(marketValue) && tmpTeam.size()<12) {
+			tmpTeam.put(name, player);
+			user.updateBudget(marketValue, true);
+			System.out.println("budget after buy" + user.getBudget());
+			return 0;
+		}
 		return -1;
 	}
 	
@@ -63,7 +65,14 @@ public class Game {
 	 * @param name
 	 */
 	public void removePlayer(String name) {
-		
+		User user = users.get(userTurn);
+		FootballPlayer player = market.findPlayer(name);
+		double marketValue = player.getMarketValue();
+		if (tmpTeam.size() > 0) {
+			user.updateBudget(marketValue, false);
+			tmpTeam.remove(name);
+		}
+		System.out.println("budget after sell" + user.getBudget());
 	}
 	
 	/**
@@ -116,6 +125,10 @@ public class Game {
 	
 	public int getCurrentRound() {
 		return roundNumber;
+	}
+	
+	public Market getMarket(){
+		return market;
 	}
 
 }
