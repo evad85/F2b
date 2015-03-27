@@ -8,11 +8,14 @@ import is.hbv401g.dummy.FootballPlayer;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -26,6 +29,13 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.ListSelectionModel;
+import java.awt.Font;
 
 public class Transfers extends JPanel {
 
@@ -55,9 +65,10 @@ public class Transfers extends JPanel {
 	private JButton addForward1;
 	private JButton addForward2;
 	private JButton addGoalkeeper;
-	private JLabel label;
-	private JLabel label_1;
-	private JLabel label_2;
+	private JLabel defenceName1;
+	private JLabel defenceName2;
+	private JLabel defenceName3;
+	private JLabel defenceName4;
 	private JButton btnI;
 	private JButton btnI_1;
 	private JButton btnI_2;
@@ -68,14 +79,19 @@ public class Transfers extends JPanel {
 	private JButton button_3;
 	private JButton button_4;
 	private JButton button_5;
-	private JLabel label_3;
-	private JLabel label_4;
-	private JLabel label_5;
-	private JLabel label_6;
-	private JLabel label_7;
-	private JLabel label_8;
+	private JLabel middleName1;
+	private JLabel middleName2;
+	private JLabel middleName3;
+	private JLabel middleName4;
+	private JLabel forwardName1;
+	private JLabel forwardName2;
 	private JButton button_6;
-	private JLabel label_9;
+	private JLabel goalkeeperName;
+	private JLabel budgetLabel;
+	
+	private HashMap<String, ImageIcon> shirts;
+	private ArrayList<JButton> addButtons;
+	JFrame frame = new JFrame();
 	/**
 	 * Create the panel.
 	 */
@@ -89,25 +105,16 @@ public class Transfers extends JPanel {
 		this.game = game;
 		setLayout(null);
 		
-		JButton btnBuyPlayer = new JButton("Kaupa leikmann");
-		btnBuyPlayer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				buyPlayer();
-			}
-		});
-		btnBuyPlayer.setBounds(500, 364, 144, 29);
-		add(btnBuyPlayer);
+		shirts = new HashMap<String, ImageIcon>();
+		initShirts();
 		
-		JButton btnSellPlayer = new JButton("Selja leikmann");
-		btnSellPlayer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnSellPlayer.setBounds(500, 395, 144, 29);
-		add(btnSellPlayer);
+		
+		initView();
+		
+
 		
 		listMarket = new JList();
-		listMarket.setBounds(434, 569, 197, 173);
+		listMarket.setBounds(583, 37, 197, 304);
 		add(listMarket);
 		
 		lblBudget = new JLabel("New label");
@@ -119,7 +126,63 @@ public class Transfers extends JPanel {
 		lblNewLabel.setBounds(583, 338, 61, 16);
 		add(lblNewLabel);
 		
+		JLabel lblBudget_1 = new JLabel("Budget:");
+		lblBudget_1.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblBudget_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBudget_1.setBounds(332, 521, 61, 40);
+		add(lblBudget_1);
 		
+		budgetLabel = new JLabel("200 kr");
+		budgetLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		budgetLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		budgetLabel.setBounds(414, 521, 61, 40);
+		add(budgetLabel);
+		
+		
+	}
+	
+	/**
+	 * 
+	 */
+	private void buyPlayer(FootballPlayer player, String playerName) {
+		int valid = game.addPlayer(playerName);
+		if(valid==0) {
+			defenceName1.setText(playerName);
+			defenceImg1.setIcon(shirts.get(player.getTeamName()));
+			addDefence1.setText("X");
+			budgetLabel.setText(game.getCurrentUser().getBudget() + "kr");
+			
+		}else {
+			JOptionPane.showMessageDialog(frame,
+				    "You don´t have enough budget too buy" + playerName);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void sellPlayer(String playerName) {
+		game.removePlayer(playerName);
+		defenceName1.setText("");
+		defenceImg1.setIcon(shirts.get("noTeam"));
+		addDefence1.setText("+");
+		budgetLabel.setText(game.getCurrentUser().getBudget() + "kr");
+	}
+	
+	private void setMarket() {
+		
+		DefaultListModel listModel = new DefaultListModel();
+		Core core = game.getCore();
+		FootballPlayer[] players = core.getAllPlayers();
+		for(int i = 0; i<players.length; i++) {
+			listModel.addElement(players[i].getName());
+		}
+		listMarket.setModel(listModel);
+		User user = game.getUsers().get(game.getUserTurn());
+		lblBudget.setText(user.getBudget()+"");
+	}
+	
+	private void initView(){
 		// Shirt images
 		goalkeeperImg = new JLabel("");
 		goalkeeperImg.setIcon(new ImageIcon(Transfers.class.getResource("/resources/manutd_goalkeeper_shirt.png")));
@@ -182,15 +245,37 @@ public class Transfers extends JPanel {
 		addGoalkeeper.setBounds(211, 74, 20, 16);
 		add(addGoalkeeper);
 		
+		
 		addDefence1 = new JButton("+");
+		addDefence1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JButton button = (JButton) e.getSource();
+				String playerName = (String) listMarket.getModel().getElementAt(listMarket.getSelectedIndex());
+				FootballPlayer player = game.getMarket().findPlayer(playerName);
+				if (button.getText().equals("+")) {
+					
+					buyPlayer(player, playerName);
+						
+				}else{
+					sellPlayer(defenceName1.getText());
+				}
+			}
+		});
+		
 		addDefence1.setBounds(60, 169, 20, 16);
 		add(addDefence1);
+		
 		
 		addDefence2 = new JButton("+");
 		addDefence2.setBounds(157, 169, 20, 16);
 		add(addDefence2);
+
 		
 		addDefence3 = new JButton("+");
+		addDefence3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		addDefence3.setBounds(281, 169, 20, 16);
 		add(addDefence3);
 		
@@ -224,106 +309,128 @@ public class Transfers extends JPanel {
 		
 		//info buttons
 		button_6 = new JButton("i");
+		button_6.setBackground(Color.YELLOW);
 		button_6.setBounds(265, 74, 20, 16);
 		add(button_6);
 		
 		btnI = new JButton("i");
+		btnI.setBackground(Color.LIGHT_GRAY);
 		btnI.setBounds(101, 169, 20, 16);
 		add(btnI);
 		
 		btnI_1 = new JButton("i");
+		btnI_1.setBackground(Color.YELLOW);
 		btnI_1.setBounds(198, 169, 20, 16);
 		add(btnI_1);
 		
 		btnI_2 = new JButton("i");
+		btnI_2.setBackground(Color.YELLOW);
 		btnI_2.setBounds(322, 169, 20, 16);
 		add(btnI_2);
 		
 		btnI_3 = new JButton("i");
+		btnI_3.setBackground(Color.YELLOW);
 		btnI_3.setBounds(414, 169, 20, 16);
 		add(btnI_3);
 		
 		button = new JButton("i");
+		button.setBackground(Color.YELLOW);
 		button.setBounds(101, 292, 20, 16);
 		add(button);
 		
 		button_1 = new JButton("i");
+		button_1.setBackground(Color.YELLOW);
 		button_1.setBounds(198, 292, 20, 16);
 		add(button_1);
 		
 		button_2 = new JButton("i");
+		button_2.setBackground(Color.YELLOW);
 		button_2.setBounds(322, 292, 20, 16);
 		add(button_2);
 		
 		button_3 = new JButton("i");
+		button_3.setBackground(Color.YELLOW);
 		button_3.setBounds(414, 292, 20, 16);
 		add(button_3);
 		
 		button_4 = new JButton("i");
+		button_4.setBackground(Color.YELLOW);
 		button_4.setBounds(211, 408, 20, 16);
 		add(button_4);
 		
 		button_5 = new JButton("i");
+		button_5.setBackground(Color.YELLOW);
 		button_5.setBounds(308, 408, 20, 16);
 		add(button_5);
 		
 		
 		//Name labels
 		
-		JLabel lblName = new JLabel("Name");
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblName.setBounds(70, 192, 61, 16);
-		add(lblName);
+		defenceName1 = new JLabel("Name");
+		defenceName1.setForeground(Color.WHITE);
+		defenceName1.setHorizontalAlignment(SwingConstants.CENTER);
+		defenceName1.setBounds(70, 192, 61, 16);
+		add(defenceName1);
 		
-		label = new JLabel("Name");
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setBounds(171, 192, 61, 16);
-		add(label);
+		defenceName2 = new JLabel("Name");
+		defenceName2.setForeground(Color.WHITE);
+		defenceName2.setHorizontalAlignment(SwingConstants.CENTER);
+		defenceName2.setBounds(171, 192, 61, 16);
+		add(defenceName2);
 		
-		label_1 = new JLabel("Name");
-		label_1.setHorizontalAlignment(SwingConstants.CENTER);
-		label_1.setBounds(287, 192, 61, 16);
-		add(label_1);
+		defenceName3 = new JLabel("Name");
+		defenceName3.setForeground(Color.WHITE);
+		defenceName3.setHorizontalAlignment(SwingConstants.CENTER);
+		defenceName3.setBounds(287, 192, 61, 16);
+		add(defenceName3);
 		
-		label_2 = new JLabel("Name");
-		label_2.setHorizontalAlignment(SwingConstants.CENTER);
-		label_2.setBounds(373, 192, 61, 16);
-		add(label_2);
+		defenceName4 = new JLabel("Name");
+		defenceName4.setForeground(Color.WHITE);
+		defenceName4.setHorizontalAlignment(SwingConstants.CENTER);
+		defenceName4.setBounds(373, 192, 61, 16);
+		add(defenceName4);
 		
-		label_3 = new JLabel("Name");
-		label_3.setHorizontalAlignment(SwingConstants.CENTER);
-		label_3.setBounds(70, 310, 61, 16);
-		add(label_3);
+		middleName1 = new JLabel("Name");
+		middleName1.setForeground(Color.WHITE);
+		middleName1.setHorizontalAlignment(SwingConstants.CENTER);
+		middleName1.setBounds(70, 310, 61, 16);
+		add(middleName1);
 		
-		label_4 = new JLabel("Name");
-		label_4.setHorizontalAlignment(SwingConstants.CENTER);
-		label_4.setBounds(171, 310, 61, 16);
-		add(label_4);
+		middleName2 = new JLabel("Name");
+		middleName2.setForeground(Color.WHITE);
+		middleName2.setHorizontalAlignment(SwingConstants.CENTER);
+		middleName2.setBounds(171, 310, 61, 16);
+		add(middleName2);
 		
-		label_5 = new JLabel("Name");
-		label_5.setHorizontalAlignment(SwingConstants.CENTER);
-		label_5.setBounds(287, 310, 61, 16);
-		add(label_5);
+		middleName3 = new JLabel("Name");
+		middleName3.setForeground(Color.WHITE);
+		middleName3.setHorizontalAlignment(SwingConstants.CENTER);
+		middleName3.setBounds(287, 310, 61, 16);
+		add(middleName3);
 		
-		label_6 = new JLabel("Name");
-		label_6.setHorizontalAlignment(SwingConstants.CENTER);
-		label_6.setBounds(373, 310, 61, 16);
-		add(label_6);
+		middleName4 = new JLabel("Name");
+		middleName4.setForeground(Color.WHITE);
+		middleName4.setHorizontalAlignment(SwingConstants.CENTER);
+		middleName4.setBounds(373, 310, 61, 16);
+		add(middleName4);
 		
-		label_7 = new JLabel("Name");
-		label_7.setHorizontalAlignment(SwingConstants.CENTER);
-		label_7.setBounds(171, 431, 61, 16);
-		add(label_7);
+		forwardName1 = new JLabel("Name");
+		forwardName1.setForeground(Color.WHITE);
+		forwardName1.setHorizontalAlignment(SwingConstants.CENTER);
+		forwardName1.setBounds(171, 431, 61, 16);
+		add(forwardName1);
 		
-		label_8 = new JLabel("Name");
-		label_8.setHorizontalAlignment(SwingConstants.CENTER);
-		label_8.setBounds(272, 431, 61, 16);
-		add(label_8);
+		forwardName2 = new JLabel("Name");
+		forwardName2.setForeground(Color.WHITE);
+		forwardName2.setHorizontalAlignment(SwingConstants.CENTER);
+		forwardName2.setBounds(272, 431, 61, 16);
+		add(forwardName2);
 		
-		label_9 = new JLabel("Name");
-		label_9.setHorizontalAlignment(SwingConstants.CENTER);
-		label_9.setBounds(224, 91, 61, 16);
-		add(label_9);
+		goalkeeperName = new JLabel("Name");
+		goalkeeperName.setForeground(Color.WHITE);
+		goalkeeperName.setHorizontalAlignment(SwingConstants.CENTER);
+		goalkeeperName.setBounds(224, 91, 61, 16);
+		add(goalkeeperName);
 		
 		//Pitch
 		JLabel pitch = new JLabel("");
@@ -331,53 +438,23 @@ public class Transfers extends JPanel {
 		pitch.setBounds(6, 6, 501, 482);
 		add(pitch);
 		
-		JButton btnConf = new JButton("Confirm team");
+		JButton btnConf = new JButton("Confirm transfare");
 		btnConf.setBounds(22, 521, 128, 40);
 		add(btnConf);
-		
-		
-
-		
-		
-		
-
-		
-
-		
-		
-
-		
-		
+	
 	}
 	
-	/**
-	 * 
-	 */
-	private void buyPlayer() {
-		String playerName = listMarket.getSelectedValue().toString();
-		int valid = game.addPlayer(playerName);
-		if(valid==0) {
-			lblNewLabel.setText(playerName);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private void sellPlayer() {
-		
-	}
-	
-	private void setMarket() {
-		
-		DefaultListModel listModel = new DefaultListModel();
-		Core core = game.getCore();
-		FootballPlayer[] players = core.getAllPlayers();
-		for(int i = 0; i<players.length; i++) {
-			listModel.addElement(players[i].getName());
-		}
-		listMarket.setModel(listModel);
-		User user = game.getUsers().get(game.getUserTurn());
-		lblBudget.setText(user.getBudget()+"");
+	private void initShirts(){
+		shirts.put("Arsenal", new ImageIcon(Transfers.class.getResource("/resources/arsenal_shirt.png")));
+		shirts.put("Chelsea", new ImageIcon(Transfers.class.getResource("/resources/chelsea_shirt.png")));
+		shirts.put("Stoke", new ImageIcon(Transfers.class.getResource("/resources/stoke_shirt.png")));
+		shirts.put("Man Utd", new ImageIcon(Transfers.class.getResource("/resources/manutd_shirt.png")));
+		shirts.put("Man City", new ImageIcon(Transfers.class.getResource("/resources/mancity_shirt.png")));
+		shirts.put("Southampton", new ImageIcon(Transfers.class.getResource("/resources/southampton_shirt.png")));
+		shirts.put("Swansea", new ImageIcon(Transfers.class.getResource("/resources/swansea_shirt.png")));
+		shirts.put("Spurs", new ImageIcon(Transfers.class.getResource("/resources/spurs_shirt.png")));
+		shirts.put("West Ham", new ImageIcon(Transfers.class.getResource("/resources/westham_shirt.png")));
+		shirts.put("Liverpool", new ImageIcon(Transfers.class.getResource("/resources/liverpool_shirt.png")));
+		shirts.put("noTeam", new ImageIcon(Transfers.class.getResource("/resources/no_team.png")));
 	}
 }

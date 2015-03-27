@@ -18,8 +18,8 @@ public class Market {
 	public void updateMarket() {
 		allTeams = new FootballTeam("Öll lið", core.getAllPlayers());
 	}
-	
-	public FootballPlayer findPlayer(String name, String teamName) {
+	// tók út team name í params
+	public FootballPlayer findPlayer(String name) {
 		FootballPlayer[] allPlayers = allTeams.getAllPlayers();
 		FootballPlayer player = null;
 		for(int i = 0; i<allPlayers.length; i++) {
