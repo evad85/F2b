@@ -190,7 +190,7 @@ public class Transfers extends JPanel {
 		
 		DefaultListModel listModel = new DefaultListModel();
 		Core core = game.getCore();
-		FootballPlayer[] players = core.getAllPlayers();
+		FootballPlayer[] players = core.getAllFootballPlayers();
 		for(int i = 0; i<players.length; i++) {
 			listModel.addElement(players[i].getName());
 		}
