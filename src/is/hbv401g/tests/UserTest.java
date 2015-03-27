@@ -2,7 +2,7 @@ package is.hbv401g.tests;
 
 import static org.junit.Assert.*;
 import is.hbv401g.code.user.User;
-import is.hbv401g.dummy.Player;
+import is.hbv401g.dummy.FootballPlayer;
 import is.hbv401g.mock.RandomNumberOfPlayersMock;
 
 import org.junit.Test;

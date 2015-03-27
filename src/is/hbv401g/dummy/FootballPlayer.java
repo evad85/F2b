@@ -1,6 +1,6 @@
 package is.hbv401g.dummy;
 
-public class Player {
+public class FootballPlayer {
 	private String name;
 	private int age;
 	private int number;
@@ -8,7 +8,7 @@ public class Player {
 	private double marketValue;
 	private Statistics [] roundStatistics = new Statistics[19];
 	
-	public Player(String name, int age, String teamName, int number,
+	public FootballPlayer(String name, int age, String teamName, int number,
 			double marketValue) {
 		this.name = name;
 		this.age = age;

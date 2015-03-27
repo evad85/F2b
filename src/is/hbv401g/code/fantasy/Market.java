@@ -2,7 +2,7 @@ package is.hbv401g.code.fantasy;
 
 import is.hbv401g.dummy.Core;
 import is.hbv401g.dummy.FootballTeam;
-import is.hbv401g.dummy.Player;
+import is.hbv401g.dummy.FootballPlayer;
 
 public class Market {
 	
@@ -19,9 +19,9 @@ public class Market {
 		allTeams = new FootballTeam("Öll lið", core.getAllPlayers());
 	}
 	
-	public Player findPlayer(String name, String teamName) {
-		Player[] allPlayers = allTeams.getAllPlayers();
-		Player player = null;
+	public FootballPlayer findPlayer(String name, String teamName) {
+		FootballPlayer[] allPlayers = allTeams.getAllPlayers();
+		FootballPlayer player = null;
 		for(int i = 0; i<allPlayers.length; i++) {
 			if(allPlayers[i].getName().equals(name)) {
 				player = allPlayers[i];
