@@ -17,8 +17,8 @@ public class Game {
 	private String teamName;
 	private int maxRounds = 18;
 	private int userTurn = 0;
-	private Core base = new Core();
-	private Market market = new Market(base);
+	private Core core = new Core();
+	private Market market = new Market(core);
 	
 	
 	/**
@@ -31,6 +31,7 @@ public class Game {
 		users.add(newUser);
 		this.teamName = teamName;
 	}
+
 	
 	/**
 	 * 
@@ -113,7 +114,7 @@ public class Game {
 	 * @return
 	 */
 	public Core getCore() {
-		return base;
+		return core;
 	}
 	
 	public int getUserTurn() {
