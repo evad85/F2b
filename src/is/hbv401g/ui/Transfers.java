@@ -3,7 +3,7 @@ package is.hbv401g.ui;
 import is.hbv401g.code.fantasy.Game;
 import is.hbv401g.code.user.User;
 import is.hbv401g.dummy.Core;
-import is.hbv401g.dummy.Player;
+import is.hbv401g.dummy.FootballPlayer;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -91,7 +91,7 @@ public class Transfers extends JPanel {
 		
 		DefaultListModel listModel = new DefaultListModel();
 		Core core = game.getCore();
-		Player[] players = core.getAllPlayers();
+		FootballPlayer[] players = core.getAllPlayers();
 		for(int i = 0; i<players.length; i++) {
 			listModel.addElement(players[i].getName());
 		}

@@ -28,8 +28,7 @@ public class UserGui extends JPanel {
 		this.game = game;
 		textArea = new JTextArea();
 		textArea.setBounds(86, 97, 229, 154);
-		add(textArea);
-		
+		add(textArea);	
 	}
 	
 	public static void updateTextArea() {

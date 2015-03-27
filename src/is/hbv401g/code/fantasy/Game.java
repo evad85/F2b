@@ -3,7 +3,7 @@ package is.hbv401g.code.fantasy;
 import is.hbv401g.code.user.User;
 import is.hbv401g.code.user.UserTeam;
 import is.hbv401g.dummy.Core;
-import is.hbv401g.dummy.Player;
+import is.hbv401g.dummy.FootballPlayer;
 import is.hbv401g.mock.RandomNumberOfPlayersMock;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Game {
 	private final List <User> users = new ArrayList<>();
-	private HashMap<String, Player> tmpTeam = new HashMap<String, Player>();
+	private HashMap<String, FootballPlayer> tmpTeam = new HashMap<String, FootballPlayer>();
 	private int roundNumber = 0;
 	private String teamName;
 	private int maxRounds = 18;
@@ -36,7 +36,7 @@ public class Game {
 	 * 
 	 */
 	private void updateUserTeam() {
-		Player[] players = (Player[])tmpTeam.values().toArray();
+		FootballPlayer[] players = (FootballPlayer[])tmpTeam.values().toArray();
 		//UserTeam team = new UserTeam(teamName, players);
 		//users.get(userTurn).setUserTeam(team);
 	}
@@ -48,7 +48,7 @@ public class Game {
 	 */
 	public int addPlayer(String name) {
 		User user = users.get(userTurn);
-		Player player = market.findPlayer(name, "");
+		FootballPlayer player = market.findPlayer(name, "");
 		double marketValue = player.getMarketValue();
 		//boolean validBudget = user.buyPlayer(marketValue);
 		//if(validBudget && tmpTeam.size()<12) {
