@@ -89,6 +89,10 @@ public class Game {
 		return users.get(userTurn);
 	}
 	
+	public void setCurrentUser(int userNum) {
+		userTurn = userNum;
+	}
+	
 	/**
 	 * 
 	 */
