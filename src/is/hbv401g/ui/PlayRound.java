@@ -2,6 +2,7 @@ package is.hbv401g.ui;
 
 import is.hbv401g.code.fantasy.Game;
 import is.hbv401g.code.user.User;
+import is.hbv401g.code.user.User;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
@@ -76,4 +77,6 @@ public class PlayRound extends JPanel {
 		labelPlayer2PointsText.setBounds(328, 84, 33, 14);
 		add(labelPlayer2PointsText);
 	}
+	
+	
 }

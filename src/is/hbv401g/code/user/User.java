@@ -80,6 +80,18 @@ public class User {
 		return budget;
 	}
 	
+	/**
+	 * Updates the users budget
+	 * @param points
+	 */
+	public void updateBudget(double marketValue, boolean buy) {
+		if (buy) {
+			this.budget -= marketValue;
+		}else{
+			this.budget += marketValue;
+		}
+
+	}
 	
 	/**
 	 * Returns true if the users budget is enough to buy
@@ -88,7 +100,7 @@ public class User {
 	 * @param marketValue
 	 * @return
 	 */
-	public boolean buyPlayer(double budget, double marketValue) {
+	public boolean hasEnoughBudget(double marketValue) {
 		boolean enoughBudget = marketValue <= budget;
 	    //int playerCount = userTeam.getNumberOfPlayers();
 		
