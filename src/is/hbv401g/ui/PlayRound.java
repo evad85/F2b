@@ -25,6 +25,10 @@ public class PlayRound extends JPanel {
 		setLayout(null);
 		this.game = game;
 		btnPlayer1Ready = new JButton("not ready");
+		btnPlayer1Ready.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnPlayer1Ready.setBounds(47, 114, 104, 30);
 		add(btnPlayer1Ready);
 		

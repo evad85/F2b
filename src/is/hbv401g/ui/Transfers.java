@@ -96,7 +96,7 @@ public class Transfers extends JPanel {
 	
 	private HashMap<String, ImageIcon> shirts;
 	private ArrayList<JButton> addButtons;
-	
+	private ArrayList<FootballPlayer> p;
 	private ArrayList<JLabel> namesLabels;
 	private ArrayList<JLabel> shirtLabels;
 	JFrame frame = new JFrame();
@@ -112,6 +112,9 @@ public class Transfers extends JPanel {
 		});
 		this.game = game;
 		setLayout(null);
+		namesLabels = new ArrayList<JLabel>();
+		shirtLabels = new ArrayList<JLabel>();
+		p = new ArrayList<FootballPlayer>();
 		
 		shirts = new HashMap<String, ImageIcon>();
 		initShirts();
@@ -147,11 +150,31 @@ public class Transfers extends JPanel {
 	
 	private void displayUserTeam() {
 		User user = game.getCurrentUser();
-		UserTeam userTeam = user.getUserTeam();
-		Map<String, FootballPlayer> players = userTeam.getPlayers();
+		//Mock - hér munum við sækja userteam frá user og fá leikmennina sem eru í því
+		Map<String, FootballPlayer> players = new HashMap<String, FootballPlayer>();
+		players.put("a", new FootballPlayer("a", "Liverpool", "a"));
+		players.put("b", new FootballPlayer("a", "Man Utd", "a"));
+		players.put("c", new FootballPlayer("a", "Man City", "a"));
+		players.put("d", new FootballPlayer("a", "Stoke", "a"));
+		players.put("e", new FootballPlayer("a", "West Ham", "a"));
+		players.put("f", new FootballPlayer("a", "Swansea", "a"));
+		players.put("p", new FootballPlayer("a", "Southampton", "a"));
+		players.put("l", new FootballPlayer("a", "Chelsea", "a"));
+		players.put("m", new FootballPlayer("a", "Arsenal", "a"));
+		players.put("n", new FootballPlayer("a", "Spurs", "a"));
+		players.put("g", new FootballPlayer("a", "Spurs", "a"));
+
 		for(Entry<String, FootballPlayer> playersEntry : players.entrySet()){
-            System.out.println(playersEntry.getKey() +" :: "+ playersEntry.getValue());
+            System.out.println(playersEntry.getKey());
+            FootballPlayer m = playersEntry.getValue();
+            p.add(m);
+            
         }
+		
+		for(int i = 0; i < p.size(); i++){
+			namesLabels.get(i).setText(p.get(i).getName());
+			shirtLabels.get(i).setIcon(shirts.get(p.get(i).getTeamName()));
+		}
 	}
 	
 	/**
@@ -251,6 +274,20 @@ public class Transfers extends JPanel {
 		forwardImg2.setIcon(new ImageIcon(Transfers.class.getResource("/resources/arsenal_shirt.png")));
 		forwardImg2.setBounds(267, 338, 61, 66);
 		add(forwardImg2);
+		
+		
+		//Add shirtLabels to list
+		shirtLabels.add(goalkeeperImg);
+		shirtLabels.add(defenceImg1);
+		shirtLabels.add(defenceImg2);
+		shirtLabels.add(defenceImg3);
+		shirtLabels.add(defenceImg4);
+		shirtLabels.add(middleImg1);
+		shirtLabels.add(middleImg2);
+		shirtLabels.add(middleImg3);
+		shirtLabels.add(middleImg4);
+		shirtLabels.add(forwardImg1);
+		shirtLabels.add(forwardImg2);
 		
 		// Add buttons
 		
@@ -445,6 +482,21 @@ public class Transfers extends JPanel {
 		goalkeeperName.setBounds(224, 91, 61, 16);
 		add(goalkeeperName);
 		
+		
+		// add labels to list
+		namesLabels.add(goalkeeperName);
+		namesLabels.add(defenceName1);
+		namesLabels.add(defenceName2);
+		namesLabels.add(defenceName3);
+		namesLabels.add(defenceName4);
+		namesLabels.add(middleName1);
+		namesLabels.add(middleName2);
+		namesLabels.add(middleName3);
+		namesLabels.add(middleName4);
+		namesLabels.add(forwardName1);
+		namesLabels.add(forwardName2);
+		
+		
 		//Pitch
 		JLabel pitch = new JLabel("");
 		pitch.setIcon(new ImageIcon(getClass().getResource("/resources/pitch.png")));
@@ -474,5 +526,6 @@ public class Transfers extends JPanel {
 		shirts.put("West Ham", new ImageIcon(Transfers.class.getResource("/resources/westham_shirt.png")));
 		shirts.put("Liverpool", new ImageIcon(Transfers.class.getResource("/resources/liverpool_shirt.png")));
 		shirts.put("noTeam", new ImageIcon(Transfers.class.getResource("/resources/no_team.png")));
+			
 	}
 }

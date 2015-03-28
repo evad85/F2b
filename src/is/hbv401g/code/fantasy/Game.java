@@ -37,8 +37,6 @@ public class Game {
 	 * 
 	 */
 	public void updateUserTeam() {
-		
-		FootballPlayer[] players = (FootballPlayer[])tmpTeam.values().toArray();
 		UserTeam team = new UserTeam(tmpTeam);
 		users.get(userTurn).setUserTeam(team);
 	}

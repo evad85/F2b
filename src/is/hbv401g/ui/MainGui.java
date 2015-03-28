@@ -75,7 +75,7 @@ public class MainGui extends JFrame {
 				String user1=textFieldUserName1.getText();
 				String user2=textFieldUserName2.getText();
 				if(user1.equals("") && user2.equals("")){
-					labelErrorMessage.setText("Vinsamlegast fylla út leikmannanöfn");
+					labelErrorMessage.setText("Vinsamlegast fylla ï¿½t leikmannanï¿½fn");
 				}
 				else{
 					game.addNewUser(user1,"");
