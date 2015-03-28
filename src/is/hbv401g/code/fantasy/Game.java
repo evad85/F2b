@@ -132,5 +132,8 @@ public class Game {
 	public Market getMarket(){
 		return market;
 	}
+	public void setTmpTeam(HashMap<String, FootballPlayer> tmpTeam) {
+		this.tmpTeam = tmpTeam;
+	}
 
 }
