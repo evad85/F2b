@@ -44,7 +44,7 @@ import java.awt.Font;
 
 public class Transfers extends JPanel {
 
-	private Game game;
+	private final Game game;
 	private JList listMarket;
 	private JLabel lblBudget;
 	private JLabel lblNewLabel;
@@ -145,11 +145,22 @@ public class Transfers extends JPanel {
 		budgetLabel.setBounds(414, 521, 61, 40);
 		add(budgetLabel);
 		
+		JButton cancel = new JButton("Cancel all transfares");
+		cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				displayUserTeam();	
+			}
+		});
+		cancel.setBounds(22, 581, 168, 40);
+		add(cancel);
+		
 		
 	}
 	
 	private void displayUserTeam() {
 		User user = game.getCurrentUser();
+		//Endurstilla tmp team - bæði þegar nýr user byrjar og þegar ýtt er á cancel transfares.
+		game.setTmpTeam(new HashMap<String, FootballPlayer>());
 		//Mock - hér munum við sækja userteam frá user og fá leikmennina sem eru í því
 		Map<String, FootballPlayer> players = new HashMap<String, FootballPlayer>();
 		players.put("a", new FootballPlayer("a", "Liverpool", "a"));
@@ -503,14 +514,14 @@ public class Transfers extends JPanel {
 		pitch.setBounds(6, 6, 501, 482);
 		add(pitch);
 		
-		JButton btnConf = new JButton("Confirm transfare");
-		btnConf.addActionListener(new ActionListener() {
+		JButton confirm = new JButton("Confirm transfare");
+		confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.updateUserTeam();
 			}
 		});
-		btnConf.setBounds(22, 521, 128, 40);
-		add(btnConf);
+		confirm.setBounds(22, 521, 168, 40);
+		add(confirm);
 		
 	}
 	
