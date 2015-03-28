@@ -14,70 +14,100 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import java.awt.Font;
 
 public class PlayRound extends JPanel {
 	private static Game game;
-	JButton btnPlayer1Ready, btnPlayer2Ready,btnPlayRound;
-	JLabel labelPlayer1PointsText,labelPlayer1,labelPlayer2,labelPlayer1Points,labelPlayer1Name,labelPlayer1NameText;
-	JLabel labelPlayer2Name,labelPlayer2NameText,labelPlayer2Points,labelPlayer2PointsText;
+	private static User user1;
+	private static User user2;
+	private JButton btnPlayer1Ready, btnPlayer2Ready,btnPlayRound;
+	private static JLabel labelPlayer1PointsText,labelPlayer1Points,labelPlayer1NameText, lblPlayer1PointsText;
+	private static JLabel labelPlayer2NameText,labelPlayer2Points,labelPlayer2PointsText, lblPlayer2PointsText;
+	private static JLabel lblRound;
+	
 	
 	public PlayRound(final Game game) {
 		setLayout(null);
-		this.game = game;
-		btnPlayer1Ready = new JButton("not ready");
+		this.game = game;	
+		initGui();
+	}
+	
+	public static void initPlayers() {
+		user1 = game.getUsers().get(0);
+		user2 = game.getUsers().get(1);
+		labelPlayer1NameText.setText(user1.getName());
+		labelPlayer2NameText.setText(user2.getName());
+	}
+	
+	public static void updatePoints() {
+		lblPlayer1PointsText.setText(String.valueOf(user1.getPoints()));
+		lblPlayer2PointsText.setText(String.valueOf(user2.getPoints()));
+	}
+	
+	public static void updateRound() {
+		lblRound.setText("Round: " + String.valueOf(game.getCurrentRound()));
+	}
+	
+	private void initGui() {
+		btnPlayer1Ready = new JButton("Pick team");
 		btnPlayer1Ready.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				game.setCurrentUser(0);
+				UserGui.initPlayer();
+				MainGui.showCardLayout("panelUser");
 			}
 		});
-		btnPlayer1Ready.setBounds(47, 114, 104, 30);
+		btnPlayer1Ready.setBounds(36, 140, 104, 44);
 		add(btnPlayer1Ready);
 		
-		btnPlayer2Ready = new JButton("not ready");
-		btnPlayer2Ready.setBounds(257, 114, 104, 30);
+		btnPlayer2Ready = new JButton("Pick team");
+		btnPlayer2Ready.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.setCurrentUser(1);
+				UserGui.initPlayer();
+				MainGui.showCardLayout("panelUser");
+			}
+		});
+		btnPlayer2Ready.setBounds(244, 140, 104, 44);
 		add(btnPlayer2Ready);
 		
 		btnPlayRound = new JButton("Play round");
-		btnPlayRound.setBounds(166, 198, 104, 30);
+		btnPlayRound.setEnabled(false);
+		btnPlayRound.setBounds(320, 296, 177, 44);
 		add(btnPlayRound);
 		
 		labelPlayer1PointsText = new JLabel("0");
-		labelPlayer1PointsText.setBounds(118, 84, 33, 14);
+		labelPlayer1PointsText.setBounds(118, 99, 33, 14);
 		add(labelPlayer1PointsText);
 		
-		labelPlayer1 = new JLabel("Player 1");
-		labelPlayer1.setBounds(47, 43, 104, 14);
-		add(labelPlayer1);
-		
-		labelPlayer2 = new JLabel("Player 2");
-		labelPlayer2.setBounds(257, 43, 104, 14);
-		add(labelPlayer2);
-		
 		labelPlayer1Points = new JLabel("Points:");
-		labelPlayer1Points.setBounds(47, 80, 61, 23);
+		labelPlayer1Points.setBounds(47, 95, 61, 23);
 		add(labelPlayer1Points);
 		
-		labelPlayer1Name = new JLabel("name");
-		labelPlayer1Name.setBounds(47, 68, 46, 14);
-		add(labelPlayer1Name);
-		
-		labelPlayer1NameText = new JLabel("");
-		labelPlayer1NameText.setBounds(118, 68, 33, 14);
+		labelPlayer1NameText = new JLabel("Player 1");
+		labelPlayer1NameText.setBounds(47, 73, 104, 14);
 		add(labelPlayer1NameText);
 		
-		labelPlayer2Name = new JLabel("name");
-		labelPlayer2Name.setBounds(257, 68, 46, 14);
-		add(labelPlayer2Name);
-		
-		labelPlayer2NameText = new JLabel("");
-		labelPlayer2NameText.setBounds(328, 68, 33, 14);
+		labelPlayer2NameText = new JLabel("Player 2");
+		labelPlayer2NameText.setBounds(255, 73, 104, 14);
 		add(labelPlayer2NameText);
 		
 		labelPlayer2Points = new JLabel("Points:");
-		labelPlayer2Points.setBounds(257, 84, 61, 14);
+		labelPlayer2Points.setBounds(255, 99, 61, 14);
 		add(labelPlayer2Points);
 		
 		labelPlayer2PointsText = new JLabel("0");
-		labelPlayer2PointsText.setBounds(328, 84, 33, 14);
+		labelPlayer2PointsText.setBounds(328, 99, 33, 14);
 		add(labelPlayer2PointsText);
+		
+		JLabel lblUsers = new JLabel("Players");
+		lblUsers.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		lblUsers.setBounds(166, 16, 104, 25);
+		add(lblUsers);
+		
+		lblRound = new JLabel("Round: 1");
+		lblRound.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		lblRound.setBounds(41, 306, 99, 16);
+		add(lblRound);
 	}
 }
