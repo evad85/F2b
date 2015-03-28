@@ -250,11 +250,13 @@ public class Transfers extends JPanel {
 		addDefence1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JButton button = (JButton) e.getSource();
-				String playerName = (String) listMarket.getModel().getElementAt(listMarket.getSelectedIndex());
-				FootballPlayer player = game.getMarket().findPlayer(playerName);
+				System.out.println(listMarket.getSelectedIndex());
+				System.out.println((String) listMarket.getModel().getElementAt(listMarket.getSelectedIndex()));
+				//String playerName = (String) listMarket.getModel().getElementAt(listMarket.getSelectedIndex());
+				//FootballPlayer player = game.getMarket().findPlayer(playerName);
 				if (button.getText().equals("+")) {
 					
-					buyPlayer(player, playerName);
+				//	buyPlayer(player, playerName);
 						
 				}else{
 					sellPlayer(defenceName1.getText());
