@@ -15,6 +15,7 @@ public class User {
 	private final String name; 
 	private int points = 0;
 	private double budget = 10000.0;
+	private boolean transferFinished = false;
 	// Each seat in the array holds information about the
 	// team the user selected for one round and the users score
 	// in that round. The first seat is empty so that seat number 1
@@ -113,6 +114,14 @@ public class User {
 	 */
 	public void sellPlayer(double marketValue) {
 		
+	}
+	
+	public boolean isTransferFinished() {
+		return transferFinished;
+	}
+	
+	public void setTransferFinished(boolean value) {
+		transferFinished = value;
 	}
 
 }

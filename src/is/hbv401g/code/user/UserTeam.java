@@ -8,25 +8,30 @@ import java.util.Random;
 
 public class UserTeam {
 	
-HashMap<String, FootballPlayer> players;
+	private static HashMap<String, FootballPlayer> players;
 	
 	
-	public UserTeam(HashMap<String, FootballPlayer> players) {
-		// TODO Auto-generated constructor stub
+	public UserTeam() {
 		players = new HashMap<String, FootballPlayer>();
-
-		
 	}
-
-	public int getNumberOfPlayers() {
-		Random rand = new Random();
-	    int randomNum = rand.nextInt((15 - 0) + 1) + 0;
-		return randomNum;
+	
+	public int size() {
+		return players.size();
 	}
 	
 	public HashMap<String, FootballPlayer> getPlayers() {
 		return players;
 	}
-
-
+	
+	public void addPlayer(String name, FootballPlayer player) {
+		players.put(name, player);
+	}
+	
+	public void removePlayer(String name) {
+		players.remove(name);
+	}
+	
+	public boolean containsPlayer(String name) {
+		return players.containsKey(name);
+	}
 }

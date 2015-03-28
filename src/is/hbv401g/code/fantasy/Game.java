@@ -5,6 +5,8 @@ import is.hbv401g.code.user.UserTeam;
 import is.hbv401g.dummy.Core;
 import is.hbv401g.dummy.FootballPlayer;
 import is.hbv401g.mock.RandomNumberOfPlayersMock;
+import is.hbv401g.ui.MainGui;
+import is.hbv401g.ui.PlayRound;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,24 +14,26 @@ import java.util.List;
 
 public class Game {
 	private final List <User> users = new ArrayList<>();
-	private HashMap<String, FootballPlayer> tmpTeam = new HashMap<String, FootballPlayer>();
+	private UserTeam tmpTeam = new UserTeam();
 	private int roundNumber = 0;
-	private String teamName;
 	private int maxRounds = 18;
 	private int userTurn = 0;
 	private Core core = new Core();
 	private Market market = new Market(core);
+	private boolean firstGame = true;
 	
+	public Game() {
+		
+	}
 	
 	/**
 	 * 
 	 * @param name
 	 * 
 	 */
-	public void addNewUser(String userName, String teamName ) {
-		User newUser = new User(userName, new UserTeam(null));
+	public void addNewUser(String userName) {
+		User newUser = new User(userName, new UserTeam());
 		users.add(newUser);
-		this.teamName = teamName;
 	}
 
 	
@@ -37,8 +41,7 @@ public class Game {
 	 * 
 	 */
 	public void updateUserTeam() {
-		UserTeam team = new UserTeam(tmpTeam);
-		users.get(userTurn).setUserTeam(team);
+		users.get(userTurn).setUserTeam(tmpTeam);
 	}
 	
 	/**
@@ -51,8 +54,11 @@ public class Game {
 		FootballPlayer player = market.findPlayer(name);
 		double marketValue = player.getMarketValue();
 		System.out.println("budget before buy" + user.getBudget());
-		if(user.hasEnoughBudget(marketValue) && tmpTeam.size()<12) {
-			tmpTeam.put(name, player);
+		if(tmpTeam.containsPlayer(name)) {
+			return 1;
+		}
+		else if(user.hasEnoughBudget(marketValue) && tmpTeam.size()<12) {
+			tmpTeam.addPlayer(name, player);
 			user.updateBudget(marketValue, true);
 			System.out.println("budget " + user.getBudget());
 			System.out.println("marketvalue " +marketValue);
@@ -72,7 +78,7 @@ public class Game {
 		double marketValue = player.getMarketValue();
 		if (tmpTeam.size() > 0) {
 			user.updateBudget(marketValue, false);
-			tmpTeam.remove(name);
+			tmpTeam.removePlayer(name);
 		}
 		System.out.println("budget after sell" + user.getBudget());
 	}
@@ -91,13 +97,6 @@ public class Game {
 	
 	public void setCurrentUser(int userNum) {
 		userTurn = userNum;
-	}
-	
-	/**
-	 * 
-	 */
-	public void changeUserTurn() {
-		
 	}
 	
 	/**
@@ -136,8 +135,28 @@ public class Game {
 	public Market getMarket(){
 		return market;
 	}
-	public void setTmpTeam(HashMap<String, FootballPlayer> tmpTeam) {
+	
+	public void setTmpTeam(UserTeam tmpTeam) {
 		this.tmpTeam = tmpTeam;
 	}
-
+	
+	public int getNumberOfSelectedPlayers() {
+		return tmpTeam.size();
+	}
+	
+	public void endUserTurn() {
+		updateUserTeam();
+		users.get(userTurn).setTransferFinished(true);
+		PlayRound.endUserTurn();
+		tmpTeam = new UserTeam();
+		MainGui.showCardLayout("panelPlayRound");
+	}
+	
+	public void setFirstGame(boolean value) {
+		firstGame = value;
+	}
+	
+	public boolean isFirstGame() {
+		return firstGame;
+	}
 }

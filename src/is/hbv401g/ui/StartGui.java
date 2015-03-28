@@ -34,8 +34,8 @@ public class StartGui extends JPanel {
 	}
 	
 	private void addUsers(){
-		game.addNewUser(user1,"");
-		game.addNewUser(user2,"");
+		game.addNewUser(user1);
+		game.addNewUser(user2);
 	}
 	
 	private void initGui() {	
