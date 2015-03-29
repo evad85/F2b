@@ -77,7 +77,7 @@ public class PlayRound extends JPanel {
 		btnPlayRound = new JButton("Play round");
 		btnPlayRound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.setFirstGame(false);
+				game.endRound();
 			}
 		});
 		btnPlayRound.setEnabled(false);

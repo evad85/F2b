@@ -4,6 +4,7 @@ import is.hbv401g.code.user.User;
 import is.hbv401g.code.user.UserTeam;
 import is.hbv401g.dummy.Core;
 import is.hbv401g.dummy.FootballPlayer;
+import is.hbv401g.dummy.Statistics;
 import is.hbv401g.mock.RandomNumberOfPlayersMock;
 import is.hbv401g.ui.MainGui;
 import is.hbv401g.ui.PlayRound;
@@ -20,28 +21,23 @@ public class Game {
 	private int userTurn = 0;
 	private Core core = new Core();
 	private Market market = new Market(core);
-	private boolean firstGame = true;
-	
-	public Game() {
-		
-	}
 	
 	/**
-	 * 
-	 * @param name
-	 * 
+	 * Creates a new user
+	 * @param userName
 	 */
 	public void addNewUser(String userName) {
-		User newUser = new User(userName, new UserTeam());
+		User newUser = new User(userName);
 		users.add(newUser);
 	}
-
 	
 	/**
-	 * 
+	 * Sets the team the user has selected for the current
+	 * round
 	 */
 	public void updateUserTeam() {
-		users.get(userTurn).setUserTeam(tmpTeam);
+		User user = users.get(userTurn);
+		user.setUserTeam(tmpTeam, roundNumber);
 	}
 	
 	/**
@@ -54,12 +50,13 @@ public class Game {
 		FootballPlayer player = market.findPlayer(name);
 		double marketValue = player.getMarketValue();
 		System.out.println("budget before buy" + user.getBudget());
+		
 		if(tmpTeam.containsPlayer(name)) {
 			return 1;
-		}
-		else if(user.hasEnoughBudget(marketValue) && tmpTeam.size()<12) {
+		} 
+		else if(user.hasEnoughBudget(marketValue)) {
 			tmpTeam.addPlayer(name, player);
-			user.updateBudget(marketValue, true);
+			user.updateBudget(marketValue, "-");
 			System.out.println("budget " + user.getBudget());
 			System.out.println("marketvalue " +marketValue);
 			System.out.println("budget after buy" + user.getBudget());
@@ -77,7 +74,7 @@ public class Game {
 		FootballPlayer player = market.findPlayer(name);
 		double marketValue = player.getMarketValue();
 		if (tmpTeam.size() > 0) {
-			user.updateBudget(marketValue, false);
+			user.updateBudget(marketValue, "+");
 			tmpTeam.removePlayer(name);
 		}
 		System.out.println("budget after sell" + user.getBudget());
@@ -103,13 +100,20 @@ public class Game {
 	 * 
 	 * @return
 	 */
-	public boolean endRound() {
-		// updateTeam
-		// athuga hvort að allir séu búnir að gera
-		// updateMarket
-		// uppfæra stig
-		// breyta userTurn í 0
-		return false;
+	public void endRound() {
+		if (roundNumber==maxRounds) {
+			endGame();
+		} else {
+			// TODO updateTeam
+			// TODO updateMarket
+			// TODO uppfæra stig
+			core.simulateNextRound();
+			roundNumber++;
+		}
+	}
+	
+	private void endGame() {
+		
 	}
 	
 	/**
@@ -150,13 +154,5 @@ public class Game {
 		PlayRound.endUserTurn();
 		tmpTeam = new UserTeam();
 		MainGui.showCardLayout("panelPlayRound");
-	}
-	
-	public void setFirstGame(boolean value) {
-		firstGame = value;
-	}
-	
-	public boolean isFirstGame() {
-		return firstGame;
 	}
 }

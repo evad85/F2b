@@ -119,12 +119,13 @@ public class Transfers extends JPanel {
 	}
 	
 	private static void displayUserTeam() {
-		if (game.isFirstGame()) {
+		if (game.getCurrentRound()==0) {
 			for (int i = 0; i<11; i++) {
 				playerNameArray[i].setText("Name");
 				imageArray[i].setIcon(shirts.get("noTeam"));
 				buttonArray[i].setText("+");
 			}
+			user.setUserTeam(new UserTeam(),game.getCurrentRound());
 		}
 		
 		//Endurstilla tmp team - bæði þegar nýr user byrjar og þegar ýtt er á cancel transfers.
@@ -305,14 +306,14 @@ public class Transfers extends JPanel {
 		lblBudget.setBounds(599, 16, 61, 40);
 		add(lblBudget);
 		
-		JButton cancel = new JButton("Reset");
-		cancel.addActionListener(new ActionListener() {
+		JButton btnCancel = new JButton("Reset");
+		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				displayUserTeam();	
 			}
 		});
-		cancel.setBounds(6, 553, 85, 29);
-		add(cancel);
+		btnCancel.setBounds(6, 553, 85, 29);
+		add(btnCancel);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(599, 75, 175, 27);
@@ -611,13 +612,13 @@ public class Transfers extends JPanel {
 		JButton confirm = new JButton("Confirm transfer");
 		confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(game.getNumberOfSelectedPlayers()==11) {
+				//if(game.getNumberOfSelectedPlayers()==11) {
 					game.endUserTurn();	
-				}
-				else {
-					JOptionPane.showMessageDialog(frame,
-						    "Please select players for all positions");
-				}
+				//}
+				//else {
+					//JOptionPane.showMessageDialog(frame,
+						//    "Please select players for all positions");
+				//}
 			}
 		});
 		confirm.setBounds(6, 630, 788, 64);
