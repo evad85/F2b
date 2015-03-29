@@ -20,7 +20,8 @@ public class PlayRound extends JPanel {
 	private static Game game;
 	private static User user1;
 	private static User user2;
-	private JButton btnPlayer1Ready, btnPlayer2Ready,btnPlayRound;
+	private static JButton btnUser1, btnUser2,btnPlayRound;
+	private static JButton[] btnUserArray;
 	private static JLabel labelPlayer1PointsText,labelPlayer1Points,labelPlayer1NameText, lblPlayer1PointsText;
 	private static JLabel labelPlayer2NameText,labelPlayer2Points,labelPlayer2PointsText, lblPlayer2PointsText;
 	private static JLabel lblRound;
@@ -49,29 +50,36 @@ public class PlayRound extends JPanel {
 	}
 	
 	private void initGui() {
-		btnPlayer1Ready = new JButton("Pick team");
-		btnPlayer1Ready.addActionListener(new ActionListener() {
+		btnUser1 = new JButton("Pick team");
+		btnUser1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.setCurrentUser(0);
 				UserGui.initPlayer();
+				Transfers.initPlayer();
 				MainGui.showCardLayout("panelUser");
 			}
 		});
-		btnPlayer1Ready.setBounds(36, 140, 104, 44);
-		add(btnPlayer1Ready);
+		btnUser1.setBounds(36, 140, 104, 44);
+		add(btnUser1);
 		
-		btnPlayer2Ready = new JButton("Pick team");
-		btnPlayer2Ready.addActionListener(new ActionListener() {
+		btnUser2 = new JButton("Pick team");
+		btnUser2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.setCurrentUser(1);
 				UserGui.initPlayer();
+				Transfers.initPlayer();
 				MainGui.showCardLayout("panelUser");
 			}
 		});
-		btnPlayer2Ready.setBounds(244, 140, 104, 44);
-		add(btnPlayer2Ready);
+		btnUser2.setBounds(244, 140, 104, 44);
+		add(btnUser2);
 		
 		btnPlayRound = new JButton("Play round");
+		btnPlayRound.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.endRound();
+			}
+		});
 		btnPlayRound.setEnabled(false);
 		btnPlayRound.setBounds(320, 296, 177, 44);
 		add(btnPlayRound);
@@ -109,5 +117,14 @@ public class PlayRound extends JPanel {
 		lblRound.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		lblRound.setBounds(41, 306, 99, 16);
 		add(lblRound);
+		
+		btnUserArray = new JButton[]{btnUser1,btnUser2};
+	}
+	
+	public static void endUserTurn(){
+		btnUserArray[game.getUserTurn()].setEnabled(false);
+		if(user1.isTransferFinished() && user2.isTransferFinished()){
+			btnPlayRound.setEnabled(true);
+		}
 	}
 }

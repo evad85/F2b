@@ -11,10 +11,11 @@ public class User {
 	
 	// The team the user has selected for the present
 	// round
-	private UserTeam userTeam; 
+	private UserTeam [] userTeam = new UserTeam[18]; 
 	private final String name; 
 	private int points = 0;
 	private double budget = 10000.0;
+	private boolean transferFinished = false;
 	// Each seat in the array holds information about the
 	// team the user selected for one round and the users score
 	// in that round. The first seat is empty so that seat number 1
@@ -25,9 +26,8 @@ public class User {
 	 * Creates new user with name as user name
 	 * @param name
 	 */
-	public User(String name, UserTeam userTeam) {
+	public User(String name) {
 		this.name = name;
-		this.userTeam = userTeam;
 	}
 	
 	/**
@@ -44,16 +44,16 @@ public class User {
 	 * the present round
 	 * @return
 	 */
-	public UserTeam getUserTeam() {
-		return userTeam;
+	public UserTeam getUserTeam(int round) {
+		return userTeam[round];
 	}
 
 	/**
 	 * Sets the users team for the present round
 	 * @param userTeam
 	 */
-	public void setUserTeam(UserTeam userTeam) {
-		this.userTeam = userTeam;
+	public void setUserTeam(UserTeam userTeam, int round) {
+		this.userTeam[round] = userTeam;
 	}
 
 	/**
@@ -84,8 +84,8 @@ public class User {
 	 * Updates the users budget
 	 * @param points
 	 */
-	public void updateBudget(double marketValue, boolean buy) {
-		if (buy) {
+	public void updateBudget(double marketValue, String operator) {
+		if (operator.equals("-")) {
 			this.budget -= marketValue;
 		}else{
 			this.budget += marketValue;
@@ -113,6 +113,14 @@ public class User {
 	 */
 	public void sellPlayer(double marketValue) {
 		
+	}
+	
+	public boolean isTransferFinished() {
+		return transferFinished;
+	}
+	
+	public void setTransferFinished(boolean value) {
+		transferFinished = value;
 	}
 
 }
