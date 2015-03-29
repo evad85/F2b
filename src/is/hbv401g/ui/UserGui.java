@@ -2,31 +2,26 @@ package is.hbv401g.ui;
 
 import is.hbv401g.code.fantasy.Game;
 import is.hbv401g.code.user.User;
-import is.hbv401g.dummy.FootballPlayer;
-
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
+/**
+ * UserGui displays the screen for user information such as name, points and the team the
+ * user selected in the previous round. It also shows information about how the players in that team
+ * performed.
+ *
+ */
 public class UserGui extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	private static Game game;
 	private static User user;
 	private static JLabel lblName, lblPoints;
@@ -34,40 +29,36 @@ public class UserGui extends JPanel {
 	private JLabel defenceImg1, defenceImg2, defenceImg3, defenceImg4;
 	private JLabel middleImg1, middleImg2, middleImg3, middleImg4;
 	private JLabel forwardImg1, forwardImg2;
-	private JButton addDefence1, addDefence2, addDefence3, addDefence4;
-	private JButton addMiddle1, addMiddle2, addMiddle3, addMiddle4;
-	private JButton addForward1, addForward2;
-	private JButton addGoalkeeper;
 	private JLabel defenceName1, defenceName2, defenceName3, defenceName4;
 	private JButton btnDefense1Info, btnDefense2Info, btnDefense3Info, btnDefense4Info;
 	private JButton btnMiddle1Info, btnMiddle2Info, btnMiddle3Info, btnMiddle4Info, btnForward1Info, btnForward2Info, btnGoalKeeperInfo;
 	private JLabel middleName1, middleName2, middleName3, middleName4;
 	private JLabel forwardName1, forwardName2;
 	private JLabel goalkeeperName;
-	private JLabel budgetLabel;
-	
-	private HashMap<String, ImageIcon> shirts;
-	private ArrayList<JButton> addButtons;
-	private ArrayList<FootballPlayer> p;
 	private ArrayList<JLabel> namesLabels, shirtLabels;
 
 	
 	/**
-	 * Create the panel.
+	 * Creates the panel and initializes instance variables
 	 */
-	public UserGui(final Game game) {
+	public UserGui(Game game) {
 		setLayout(null);
-		this.game = game;
+		UserGui.game = game;
 		initGui();	
 	}
 	
-	public static void initPlayer(){
+	/**
+	 * Sets the users name and points
+	 */
+	public static void initPlayer() {
 		user = game.getCurrentUser();
 		lblName.setText(user.getName());
-		lblPoints.setText(String.valueOf(user.getPoints()) + " points");
-		
+		lblPoints.setText(String.valueOf(user.getPoints()) + " points");	
 	}
 	
+	/**
+	 * Initializes the GUI
+	 */
 	private void initGui() {
 		
 		lblName = new JLabel("Name");
@@ -82,13 +73,13 @@ public class UserGui extends JPanel {
 		
 		namesLabels = new ArrayList<JLabel>();
 		shirtLabels = new ArrayList<JLabel>();
-		p = new ArrayList<FootballPlayer>();
-		
-		shirts = new HashMap<String, ImageIcon>();
-		initShirts();
+		MainGui.initShirts();
 		initView();
 	}
 	
+	/**
+	 * TODO
+	 */
 	private void initView(){
 		
 		JPanel panelTeam = new JPanel();
@@ -172,6 +163,10 @@ public class UserGui extends JPanel {
 		btnGoalKeeperInfo.setBackground(Color.YELLOW);
 		
 		btnDefense1Info = new JButton("i");
+		btnDefense1Info.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnDefense1Info.setBounds(95, 163, 20, 16);
 		panelTeam.add(btnDefense1Info);
 		btnDefense1Info.setBackground(Color.LIGHT_GRAY);
@@ -311,20 +306,5 @@ public class UserGui extends JPanel {
 		panelTeam.add(pitch);
 		pitch.setIcon(new ImageIcon(getClass().getResource("/resources/pitch.png")));
 		
-	}
-	
-	private void initShirts(){
-		shirts.put("Arsenal", new ImageIcon(Transfers.class.getResource("/resources/arsenal_shirt.png")));
-		shirts.put("Chelsea", new ImageIcon(Transfers.class.getResource("/resources/chelsea_shirt.png")));
-		shirts.put("Stoke", new ImageIcon(Transfers.class.getResource("/resources/stoke_shirt.png")));
-		shirts.put("Man Utd", new ImageIcon(Transfers.class.getResource("/resources/manutd_shirt.png")));
-		shirts.put("Man City", new ImageIcon(Transfers.class.getResource("/resources/mancity_shirt.png")));
-		shirts.put("Southampton", new ImageIcon(Transfers.class.getResource("/resources/southampton_shirt.png")));
-		shirts.put("Swansea", new ImageIcon(Transfers.class.getResource("/resources/swansea_shirt.png")));
-		shirts.put("Spurs", new ImageIcon(Transfers.class.getResource("/resources/spurs_shirt.png")));
-		shirts.put("West Ham", new ImageIcon(Transfers.class.getResource("/resources/westham_shirt.png")));
-		shirts.put("Liverpool", new ImageIcon(Transfers.class.getResource("/resources/liverpool_shirt.png")));
-		shirts.put("noTeam", new ImageIcon(Transfers.class.getResource("/resources/no_team.png")));
-			
 	}
 }

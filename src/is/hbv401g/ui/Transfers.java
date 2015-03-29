@@ -5,15 +5,8 @@ import is.hbv401g.code.user.User;
 import is.hbv401g.code.user.UserTeam;
 import is.hbv401g.dummy.Core;
 import is.hbv401g.dummy.FootballPlayer;
-import is.hbv401g.mock.RandomNumberOfPlayersMock;
 
 import javax.swing.JPanel;
-
-import java.awt.BorderLayout;
-import java.awt.Dialog;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,11 +14,6 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JTextField;
-
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -34,11 +22,6 @@ import javax.swing.SwingConstants;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.ListSelectionModel;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -46,13 +29,16 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * TODO
+ *
+ */
 public class Transfers extends JPanel {
-
+	private static final long serialVersionUID = 8544889380836133397L;
 	private static Game game;
 	private Core core;
 	private FootballPlayer[] players;
 	private static User user;
-	private UserTeam userTeam;
 	
 	private JTable tableMarket;
 	private JPanel tablePanel;
@@ -75,95 +61,79 @@ public class Transfers extends JPanel {
 	private JLabel forwardName1, forwardName2;
 	private JLabel goalkeeperName;
 	
-	private static HashMap<String, ImageIcon> shirts;
-	private ArrayList<JButton> addButtons;
-	private ArrayList<FootballPlayer> p;
 	private ArrayList<JLabel> namesLabels, shirtLabels;
 	JFrame frame = new JFrame();
 	private JPanel panelTeam;
 	private static JLabel lblBudgetText;
 	private JScrollPane marketScrollPane;
+	
 	/**
 	 * Create the panel.
 	 */
 	public Transfers(Game game) {
 		setLayout(null);
-		this.game = game;
+		Transfers.game = game;
 		this.core = game.getCore();
 		this.players = core.getAllFootballPlayers();
 		
 		initGui();
 	}
 	
+	/**
+	 * Initializes user and user team information
+	 */
 	public static void initPlayer() {
 		user = game.getUsers().get(game.getUserTurn());
-		displayUserTeam();
 		lblBudgetText.setText(user.getBudget()+"");
+		displayUserTeam();
 	}
 	
+	/**
+	 * Adds or removes a player from the team the user is selecting
+	 * @param num
+	 * @param e
+	 */
 	private void changePlayer(int num, ActionEvent e) {
 		if(tableMarket.getSelectedRow()==-1) {
 			JOptionPane.showMessageDialog(frame,"You haven't selected any player");
 		}
+		
 		JButton button = (JButton) e.getSource();
 		String playerName = (String) tableMarket.getModel().getValueAt(tableMarket.getSelectedRow(), 0);
 		FootballPlayer player = game.getMarket().findPlayer(playerName);
 		if (button.getText().equals("+")) {
-			
 			buyPlayer(player, playerName, num);
 				
 		}else{
 			sellPlayer(num);
 		}
-		System.out.println(game.getNumberOfSelectedPlayers());
 	}
 	
+	/**
+	 * Initializes the GUI for the team the user selected in the previous 
+	 * round
+	 */
 	private static void displayUserTeam() {
 		if (game.getCurrentRound()==0) {
 			for (int i = 0; i<11; i++) {
 				playerNameArray[i].setText("Name");
-				imageArray[i].setIcon(shirts.get("noTeam"));
+				imageArray[i].setIcon(MainGui.getShirt("noTeam"));
 				buttonArray[i].setText("+");
 			}
 			user.setUserTeam(new UserTeam(),game.getCurrentRound());
 		}
-		
-		//Endurstilla tmp team - bæði þegar nýr user byrjar og þegar ýtt er á cancel transfers.
-		//Mock - hér munum við sækja userteam frá user og fá leikmennina sem eru í því
-/*		Map<String, FootballPlayer> players = new HashMap<String, FootballPlayer>();
-		players.put("a", new FootballPlayer("a", "Liverpool", "a"));
-		players.put("b", new FootballPlayer("a", "Man Utd", "a"));
-		players.put("c", new FootballPlayer("a", "Man City", "a"));
-		players.put("d", new FootballPlayer("a", "Stoke", "a"));
-		players.put("e", new FootballPlayer("a", "West Ham", "a"));
-		players.put("f", new FootballPlayer("a", "Swansea", "a"));
-		players.put("p", new FootballPlayer("a", "Southampton", "a"));
-		players.put("l", new FootballPlayer("a", "Chelsea", "a"));
-		players.put("m", new FootballPlayer("a", "Arsenal", "a"));
-		players.put("n", new FootballPlayer("a", "Spurs", "a"));
-		players.put("g", new FootballPlayer("a", "Spurs", "a"));*/
-
-		/*for(Entry<String, FootballPlayer> playersEntry : players.entrySet()){
-            System.out.println(playersEntry.getKey());
-            FootballPlayer m = playersEntry.getValue();
-            p.add(m);
-            
-        }
-		
-		for(int i = 0; i < p.size(); i++){
-			namesLabels.get(i).setText(p.get(i).getName());
-			shirtLabels.get(i).setIcon(shirts.get(p.get(i).getTeamName()));
-		}*/
 	}
 	
 	/**
-	 * 
+	 * Adds a selected player to the team the user is selecting for the next round
+	 * if he has enough budget and hasn't already selected that player. Shows
+	 * a MessageDialog otherwise
 	 */
 	private void buyPlayer(FootballPlayer player, String playerName, int num) {
 		int valid = game.addPlayer(playerName);
 		if(valid==0) {
 			playerNameArray[num].setText(playerName);
-			imageArray[num].setIcon(shirts.get(player.getTeamName()));
+			imageArray[num].setIcon(MainGui.getShirt(player.getTeamName()));
 			buttonArray[num].setText("X");
 			lblBudgetText.setText(game.getCurrentUser().getBudget() + "kr");
 			
@@ -175,17 +145,21 @@ public class Transfers extends JPanel {
 	}
 	
 	/**
-	 * 
+	 * Removes a selected player from the team the user is selecting for the
+	 * next round
 	 */
 	private void sellPlayer(int num) {
 		String playerName = playerNameArray[num].getText();
 		game.removePlayer(playerName);
 		playerNameArray[num].setText("");
-		imageArray[num].setIcon(shirts.get("noTeam"));
+		imageArray[num].setIcon(MainGui.getShirt("noTeam"));
 		buttonArray[num].setText("+");
 		lblBudgetText.setText(game.getCurrentUser().getBudget() + "kr");
 	}
 	
+	/**
+	 * Initializes the GUI for the market
+	 */
 	private void setMarket() {
 		Object [][] data = new Object[players.length][5];
 		
@@ -196,15 +170,15 @@ public class Transfers extends JPanel {
 			data[i][3] = players[i].getScore();
 			data[i][4] = players[i].getMarketValue();
 		}
-		
 		String [] columnNames = {"Name", "Position", "Team", "Points", "Cost"};
-		
 		DefaultTableModel tableModel = new DefaultTableModel(data,columnNames);
 		tableMarket.setModel(tableModel);
-		
 	}
 	
-	private void addButtons() {
+	/**
+	 * Initializes the buttons for adding and removing players
+	 */
+	private void initButtons() {
 		addGoalkeeper = new JButton("+");
 		addGoalkeeper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -283,6 +257,9 @@ public class Transfers extends JPanel {
 		});
 	}
 	
+	/**
+	 * Initializes the GUI
+	 */
 	private void initGui() {
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -293,10 +270,7 @@ public class Transfers extends JPanel {
 		
 		namesLabels = new ArrayList<JLabel>();
 		shirtLabels = new ArrayList<JLabel>();
-		p = new ArrayList<FootballPlayer>();
-		
-		shirts = new HashMap<String, ImageIcon>();
-		initShirts();
+
 		initView();
 		
 		JLabel lblBudget = new JLabel("Budget:");
@@ -307,11 +281,7 @@ public class Transfers extends JPanel {
 		add(lblBudget);
 		
 		JButton btnCancel = new JButton("Reset");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				displayUserTeam();	
-			}
-		});
+		btnCancel.addActionListener(new ResetTeamActionListener());
 		btnCancel.setBounds(6, 553, 85, 29);
 		add(btnCancel);
 		
@@ -337,9 +307,12 @@ public class Transfers extends JPanel {
 		add(lblBudgetText);	
 	}
 	
+	/**
+	 * TODO
+	 */
 	private void initView(){
 		
-		addButtons();
+		initButtons();
 		
 		panelTeam = new JPanel();
 		panelTeam.setBounds(6, 59, 501, 482);
@@ -610,17 +583,7 @@ public class Transfers extends JPanel {
 		
 		
 		JButton confirm = new JButton("Confirm transfer");
-		confirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//if(game.getNumberOfSelectedPlayers()==11) {
-					game.endUserTurn();	
-				//}
-				//else {
-					//JOptionPane.showMessageDialog(frame,
-						//    "Please select players for all positions");
-				//}
-			}
-		});
+		confirm.addActionListener(new EndUserTurnActionListener());
 		confirm.setBounds(6, 630, 788, 64);
 		add(confirm);
 		
@@ -633,18 +596,23 @@ public class Transfers extends JPanel {
 				addMiddle3, addMiddle4,addForward1, addForward2};	
 	}
 	
-	private void initShirts(){
-		shirts.put("Arsenal", new ImageIcon(Transfers.class.getResource("/resources/arsenal_shirt.png")));
-		shirts.put("Chelsea", new ImageIcon(Transfers.class.getResource("/resources/chelsea_shirt.png")));
-		shirts.put("Stoke", new ImageIcon(Transfers.class.getResource("/resources/stoke_shirt.png")));
-		shirts.put("Man Utd", new ImageIcon(Transfers.class.getResource("/resources/manutd_shirt.png")));
-		shirts.put("Man City", new ImageIcon(Transfers.class.getResource("/resources/mancity_shirt.png")));
-		shirts.put("Southampton", new ImageIcon(Transfers.class.getResource("/resources/southampton_shirt.png")));
-		shirts.put("Swansea", new ImageIcon(Transfers.class.getResource("/resources/swansea_shirt.png")));
-		shirts.put("Spurs", new ImageIcon(Transfers.class.getResource("/resources/spurs_shirt.png")));
-		shirts.put("West Ham", new ImageIcon(Transfers.class.getResource("/resources/westham_shirt.png")));
-		shirts.put("Liverpool", new ImageIcon(Transfers.class.getResource("/resources/liverpool_shirt.png")));
-		shirts.put("noTeam", new ImageIcon(Transfers.class.getResource("/resources/no_team.png")));
-			
+	class EndUserTurnActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//if(game.getNumberOfSelectedPlayers()==11) {
+			game.endUserTurn();	
+		//}
+		//else {
+			//JOptionPane.showMessageDialog(frame,
+				//    "Please select players for all positions");
+		//}	
+		}	
+	}
+	
+	class ResetTeamActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			displayUserTeam();
+		}
 	}
 }

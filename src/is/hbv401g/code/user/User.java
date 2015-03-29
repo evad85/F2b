@@ -6,28 +6,41 @@
  */
 package is.hbv401g.code.user;
 
+import is.hbv401g.code.fantasy.Game;
 
+/**
+ * User contains information about a particular user in the game such as budget, points,
+ * and name
+ *
+ */
 public class User {
 	
-	// The team the user has selected for the present
-	// round
-	private UserTeam [] userTeam = new UserTeam[18]; 
+	// Each seat in userTeam holds information about the
+	// team the user selected for one round
+	private UserTeam [] userTeam;
+	private final Game game;
 	private final String name; 
-	private int points = 0;
-	private double budget = 10000.0;
-	private boolean transferFinished = false;
+	private int points;
+	private double budget;
+	// transferFinished is true if the user has finished selecting
+	// his team for the next round
+	private boolean transferFinished;
 	// Each seat in the array holds information about the
 	// team the user selected for one round and the users score
 	// in that round. The first seat is empty so that seat number 1
 	// represents the first round and etc.
-	private final UserRound[] rounds = new UserRound[19];
 	
 	/**
 	 * Creates new user with name as user name
 	 * @param name
 	 */
-	public User(String name) {
+	public User(String name, Game game) {
+		this.game = game;
 		this.name = name;
+		userTeam = new UserTeam[this.game.getMaxRounds()]; 
+		points = 0;
+		budget = 10000.0;
+		transferFinished = false;
 	}
 	
 	/**
@@ -41,7 +54,7 @@ public class User {
 
 	/**
 	 * Returns the team that the user selected for
-	 * the present round
+	 * the next round
 	 * @return
 	 */
 	public UserTeam getUserTeam(int round) {
@@ -49,7 +62,7 @@ public class User {
 	}
 
 	/**
-	 * Sets the users team for the present round
+	 * Sets the users team for the next round
 	 * @param userTeam
 	 */
 	public void setUserTeam(UserTeam userTeam, int round) {
@@ -95,32 +108,29 @@ public class User {
 	
 	/**
 	 * Returns true if the users budget is enough to buy
-	 * a selected player with the market value marketValue and
-	 * userTeam is not full. Returns false otherwise.
+	 * a selected player with the market value marketValue
+	 * Returns false otherwise.
 	 * @param marketValue
 	 * @return
 	 */
 	public boolean hasEnoughBudget(double marketValue) {
-		boolean enoughBudget = marketValue <= budget;
-	    //int playerCount = userTeam.getNumberOfPlayers();
-		
-		return enoughBudget;
+		return marketValue <= budget;
 	}
 	
 	/**
-	 * Adds marketValue to the users budget 
-	 * @param marketValue
+	 * Returns true if the user has finished selecting is team for
+	 * the next round
+	 * @return
 	 */
-	public void sellPlayer(double marketValue) {
-		
-	}
-	
 	public boolean isTransferFinished() {
 		return transferFinished;
 	}
 	
+	/**
+	 * Updates the users transfer status 
+	 * @param value
+	 */
 	public void setTransferFinished(boolean value) {
 		transferFinished = value;
 	}
-
 }

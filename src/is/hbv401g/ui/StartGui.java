@@ -9,11 +9,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 
+/**
+ * TODO
+ * @author evadoggsteingrimsdottir
+ *
+ */
 public class StartGui extends JPanel {
 	
 	private Game game;
@@ -33,11 +37,17 @@ public class StartGui extends JPanel {
 
 	}
 	
+	/**
+	 * Adds new users
+	 */
 	private void addUsers(){
 		game.addNewUser(user1);
 		game.addNewUser(user2);
 	}
 	
+	/**
+	 * Initializes the GUI
+	 */
 	private void initGui() {	
 		
 		JPanel playerPanel = new JPanel();
@@ -76,20 +86,25 @@ public class StartGui extends JPanel {
 		lblFantasyFootball.setFont(new Font("Lucida Grande", Font.PLAIN, 36));
 		lblFantasyFootball.setBounds(248, 36, 304, 55);
 		add(lblFantasyFootball);
-		btnNewGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				user1=textFieldUserName1.getText();
-				user2=textFieldUserName2.getText();
-				if(user1.equals("") || user2.equals("")){
-					lblErrorMessage.setText("Vinsamlegast fylla út leikmannanöfn");
-					lblErrorMessage.setVisible(true);
-				}
-				else{
-					addUsers();
-					PlayRound.initPlayers();
-					MainGui.showCardLayout("panelPlayRound");
-				}
+		
+		btnNewGame.addActionListener(new NewGameActionListener());
+	}
+	
+	class NewGameActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			user1=textFieldUserName1.getText();
+			user2=textFieldUserName2.getText();
+			if(user1.equals("") || user2.equals("")){
+				lblErrorMessage.setText("Vinsamlegast fylla út leikmannanöfn");
+				lblErrorMessage.setVisible(true);
 			}
-		});
+			else{
+				addUsers();
+				PlayRound.initPlayers();
+				MainGui.showCardLayout("panelPlayRound");
+			}
+			
+		}	
 	}
 }
